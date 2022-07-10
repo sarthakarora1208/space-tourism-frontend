@@ -6,7 +6,12 @@ import * as REQUESTS from '../api/spaceServiceRequests'
 import { NavigateFunction } from 'react-router-dom'
 import { Rate } from '../constants/models/Rate'
 import { uploadImageToS3 } from '../api/s3requests'
-import { editService, VENDOR_ORDERS } from '../constants/routes'
+import {
+  CUSTOMER_DASHBOARD,
+  editService,
+  VENDOR_ORDERS,
+} from '../constants/routes'
+import { getBusinessById } from './businessSlice'
 
 export interface SpaceServiceState {
   loading: boolean
@@ -243,6 +248,24 @@ export const uploadSpaceServiceImageToS3 =
       const data = await uploadImageToS3(formData)
       dispatch(setSpaceServiceImageUrl(data))
       dispatch(spaceServiceComplete())
+    } catch (err: any) {
+      const { error } = err.response.data
+      dispatch(spaceServiceFailure(error))
+      dispatch(setErrorMsg(error))
+    }
+  }
+
+export const getSpaceServiceByIdForOrder =
+  (id: string, navigate: NavigateFunction): AppThunk =>
+  async (dispatch) => {
+    try {
+      dispatch(spaceServiceStart())
+      const spaceService = await REQUESTS.getSpaceServiceById(id)
+      dispatch(setSpaceService(spaceService))
+      dispatch(setSpaceServiceImageUrl(spaceService.imageUrl))
+      dispatch(getBusinessById(spaceService!.business!.id))
+      dispatch(spaceServiceComplete())
+      navigate(`${CUSTOMER_DASHBOARD}/book-service/${id}`)
     } catch (err: any) {
       const { error } = err.response.data
       dispatch(spaceServiceFailure(error))

@@ -48,7 +48,7 @@ export const RegisterForm: React.FC<
     }
   }, shallowEqual)
 
-  const debug = true
+  const debug = false
 
   return (
     <Box my={3}>

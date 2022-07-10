@@ -8,6 +8,9 @@ import EnhancedLoginForm from './EnhancedLoginForm'
 import EnhancedUpdatePasswordForm from './EnhancedUpdatePasswordForm'
 import { LOGIN } from '../../../constants/routes'
 
+import Lottie from 'react-lottie'
+import Graphic from '../../../assets/images/rocket-in-space.json'
+
 interface ILoginProps {}
 
 const Login: React.FC<ILoginProps> = () => {
@@ -28,25 +31,26 @@ const Login: React.FC<ILoginProps> = () => {
 
   let renderedForm
 
-  const customer = false
+  const customer = true
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: Graphic,
+    rendererSettings: {
+      preserveAspectRatio: 'xMidYMid slice',
+    },
+  }
 
   switch (step) {
     case 0:
       renderedForm = <EnhancedLoginForm navigate={navigate} />
-      // vendor accounts
-      //nflyteteam@gmail.com
-      // sarthakarora1208@gmail.com
-      // renderedForm = (
-      //   <EnhancedLoginForm
-      //     email={
-      //       customer
-      //         ? "sarthakarora1208@gmail.com"
-      //         : "sarthakarora1207@gmail.com"
-      //     }
-      //     password={customer ? "12345678" : "1234567"}
-      //     navigate={navigate}
-      //   />
-      // );
+      renderedForm = (
+        <EnhancedLoginForm
+          email={customer ? 'dociye5646@lankew.com' : 'lilodi9648@meidir.com'}
+          password={customer ? '1234567' : '12345678'}
+          navigate={navigate}
+        />
+      )
 
       break
     case 1:
@@ -69,7 +73,7 @@ const Login: React.FC<ILoginProps> = () => {
   }, [])
 
   return (
-    <div style={{ paddingTop: '20vh', background: '#fafafa' }}>
+    <div style={{ paddingTop: '15vh', background: '#FFFFFF' }}>
       <Container style={{ padding: '0.4em', height: '80vh' }}>
         <Grid
           container
@@ -79,25 +83,19 @@ const Login: React.FC<ILoginProps> = () => {
           alignItems='flex-start'
         >
           <Grid item xs={12} md={6}>
-            <CssBaseline />
-            <div style={{ padding: '1em' }}>{renderedForm}</div>
-          </Grid>
-          <Grid item xs={12} md={6}>
             <Box
               sx={{
-                display: ['none', 'none', 'block'],
+                justifyContent: 'center',
+                alignItems: 'center',
+                flexDirection: 'row',
               }}
             >
-              <div
-                style={
-                  {
-                    // padding: "1em",
-                    // marginLeft: "3em",
-                    // marginBottom: "2rem",
-                  }
-                }
-              ></div>
+              <Lottie options={defaultOptions} height={400} width={400} />
             </Box>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <CssBaseline />
+            <div style={{ padding: '1em' }}>{renderedForm}</div>
           </Grid>
         </Grid>
       </Container>

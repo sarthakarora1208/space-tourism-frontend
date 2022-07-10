@@ -345,27 +345,27 @@ export const addReview =
     }
   }
 
-// export const addReply =
-//   (reply: string): AppThunk =>
-//   async (dispatch) => {
-//     try {
-//       dispatch(orderStart())
-//       const reviewId = store.getState().order.order?.review.id
-//       const review = await getReviewById(reviewId!)
-//       if (review.reply === '') {
-//         await REQUESTS.addReply(reply, reviewId!)
-//         dispatch(setSuccessMsg('Reply added successfully'))
-//       } else {
-//         dispatch(setErrorMsg('You have already replied to this review'))
-//       }
-//       dispatch(orderComplete())
-//     } catch (err: any) {
-//       const { error } = err.response.data
-//       dispatch(orderFailure(error))
-//       dispatch(setErrorMsg(error))
-//       console.log(err)
-//     }
-//   }
+export const addReply =
+  (reply: string): AppThunk =>
+  async (dispatch) => {
+    try {
+      dispatch(orderStart())
+      const reviewId = store.getState().order.order?.review.id
+      // const review = await getReviewById(reviewId!)
+      // if (review.reply === '') {
+      //   await REQUESTS.addReply(reply, reviewId!)
+      //   dispatch(setSuccessMsg('Reply added successfully'))
+      // } else {
+      //   dispatch(setErrorMsg('You have already replied to this review'))
+      // }
+      dispatch(orderComplete())
+    } catch (err: any) {
+      const { error } = err.response.data
+      dispatch(orderFailure(error))
+      dispatch(setErrorMsg(error))
+      console.log(err)
+    }
+  }
 
 export const createBabySitterOrder =
   (

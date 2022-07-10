@@ -39,8 +39,8 @@ const EnhancedLoginForm = withFormik<
   EnhancedLoginFormValues
 >({
   mapPropsToValues: (props) => ({
-    email: props.email ? props.email : 'lilodi9648@meidir.com',
-    password: props.password ? props.password : '12345678',
+    email: props.email ? props.email : '',
+    password: props.password ? props.password : '',
   }),
   validationSchema: Yup.object().shape({
     email: Yup.string()

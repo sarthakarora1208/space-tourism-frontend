@@ -5,7 +5,12 @@ const styles = {
     flexDirection: 'column',
     gap: '0.5rem',
     position: 'relative',
-    minHeight: '400px',
+    minHeight: '500px',
+    border: '1px solid #e0e0e0',
+    boxShadow: '0px 5px 10px 5px #e0e0e0',
+    '&:hover': {
+      boxShadow: '0px 20px 40px 20px #e0e0e0',
+    },
   },
   cardMedia: { height: '200px' },
   status: {
@@ -14,7 +19,6 @@ const styles = {
     left: '15px',
   },
   iconButton: {
-    // backgroundColor: "#00000020",
     backdropFilter: 'brightness(0.9)',
     position: 'absolute',
     color: '#FFF',

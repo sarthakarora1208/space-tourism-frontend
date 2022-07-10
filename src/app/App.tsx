@@ -24,6 +24,13 @@ import AddOrEditSpaceService from '../features/Vendor/AddOrEditSpaceService/AddO
 import EditSpaceService from '../features/Vendor/AddOrEditSpaceService/EditSpaceService'
 import EditVendorProfile from '../features/Vendor/EditVendorProfile/EditVendorProfile'
 import VendorProfile from '../features/Vendor/VendorProfile/VendorProfile'
+import VendorOrders from '../features/Vendor/VendorOrders/VendorOrders'
+import CustomerRoute from '../components/Routes/CustomerRoute'
+import CustomerDashboard from '../features/Customer/CustomerDashboard/CustomerDashboard'
+import CustomerOrder from '../features/Customer/CustomerOrders/CustomerOrder'
+import CustomerProfile from '../features/Customer/CustomerProfile/CustomerProfile'
+import EditCustomerProfile from '../features/Customer/EditCustomerProfile/EditCustomerProfile'
+import CustomerServices from '../features/Customer/CustomerServices/CustomerServices'
 
 Amplify.configure(awsConfig)
 
@@ -76,8 +83,35 @@ const App: React.FC<IAppProps> = ({}) => {
                       element={<VendorProfile />}
                     />
                     <Route
+                      path={ROUTES.VENDOR_ORDERS}
+                      element={<VendorOrders />}
+                    />
+                    <Route
                       path={ROUTES.editService()}
                       element={<EditSpaceService />}
+                    />
+                  </Route>
+                  {/* Customer Dashboard */}
+                  <Route element={<CustomerRoute />}>
+                    <Route
+                      path={ROUTES.CUSTOMER_DASHBOARD}
+                      element={<CustomerDashboard />}
+                    />
+                    <Route
+                      path={ROUTES.CUSTOMER_ORDERS}
+                      element={<CustomerOrder />}
+                    />
+                    <Route
+                      path={ROUTES.CUSTOMER_PROFILE}
+                      element={<CustomerProfile />}
+                    />
+                    <Route
+                      path={ROUTES.CUSTOMER_SERVICES}
+                      element={<CustomerServices />}
+                    />
+                    <Route
+                      path={ROUTES.EDIT_CUSTOMER_PROFILE}
+                      element={<EditCustomerProfile />}
                     />
                   </Route>
                 </Routes>
