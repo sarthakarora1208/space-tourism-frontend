@@ -13,6 +13,7 @@ export const VENDOR_ROUTE = '/vendor'
 export const REVIEW_ROUTE = '/review'
 export const REPLY_ROUTE = '/reply'
 export const S3_ROUTE = '/s3'
+export const SPACE_SERVICE_ROUTE = '/space-service'
 
 export const LOGIN = `${AUTH_ROUTE}/login`
 export const VENDOR_REGISTER = `${AUTH_ROUTE}${VENDOR_ROUTE}/register`
@@ -39,6 +40,12 @@ export const VENDOR_DASHBOARD = `${VENDOR_ROUTE}${DASHBOARD_ROUTE}`
 export const VENDOR_PROFILE = `${VENDOR_DASHBOARD}/profile`
 export const VENDOR_SERVICES = `${VENDOR_DASHBOARD}/services`
 export const VENDOR_ORDERS = `${VENDOR_DASHBOARD}${ORDER_ROUTE}`
+export const ADD_SERVICE = `${VENDOR_ROUTE}/add`
+export const EDIT_SERVICE = `${VENDOR_ROUTE}/:serviceId/edit`
+
+export const editService = (serviceId = ':serviceId') => {
+  return `${VENDOR_ROUTE}/${serviceId}/edit`
+}
 
 export const CUSTOMER_PROFILE = `${CUSTOMER_DASHBOARD}/profile`
 export const CUSTOMER_SERVICES = `${CUSTOMER_DASHBOARD}/services`

@@ -1,0 +1,33 @@
+export const NAME_REQUIRED = 'Name is required'
+export const EMAIL_NOT_LONG_ENOUGH = 'Email not long enough'
+export const EMAIL_REQUIRED = 'Email is required'
+export const EMAIL_INVALID = 'Invalid email address'
+export const PASSWORD_REQUIRED = 'Password is required'
+export const NEW_PASSWORD_REQUIRED = `New ${PASSWORD_REQUIRED}`
+export const CURRENT_PASSWORD_REQUIRED = `Current ${PASSWORD_REQUIRED}`
+export const CONFIRM_PASSWORD_REQUIRED = `Confirm ${PASSWORD_REQUIRED}`
+export const PASSWORD_TOO_SHORT =
+  'Password is too short - should be 6 characters minimum.'
+export const PASSWORDS_MUST_MATCH = 'Passwords must match'
+export const INVALID_PATTERN = 'Please enter a 6 digit code with numbers only!'
+export const REFERENCE_CODE_REQUIRED = 'Reference code is required'
+export const ADDRESS_REQUIRED = 'Address is required'
+export const STREET_REQUIRED = 'Street is required'
+export const CITY_REQUIRED = 'City is required'
+export const COUNTRY_REQUIRED = 'Country is required'
+export const POSTAL_CODE_REQUIRED = 'Postal code is required'
+export const ANSWER_IS_REQUIRED = 'Answer is required!'
+export const IMAGE_DESCRIPTION_IS_REQUIRED = 'Image description is required'
+export const PHONE_NUMBER_TOO_SHORT = 'Phone number is too short'
+export const PHONE_NUMBER_TOO_LONG = 'Phone number is too long'
+export const PHONE_NUMBER_REQUIRED = 'Phone number is required'
+export const PHONE_NUMBER_INVALID = 'Phone number is invalid'
+export const USERNAME_REQUIRED = 'Username is required'
+export const USERNAME_TOO_SHORT = 'Username is too short'
+export const USERNAME_TOO_LONG = 'Username is too long'
+export const USERNAME_INVALID =
+  'Username is invalid, cannot contain spaces, special characters (other than period(.), underscore(_))'
+export const DOB_REQUIRED = 'Date Of Birth is required'
+export const GENDER_REQUIRED = 'Gender is required'
+export const STATE_REQUIRED = 'Province/State is required'
+export const POSTAL_CODE_INVALID = 'Postal code is invalid'

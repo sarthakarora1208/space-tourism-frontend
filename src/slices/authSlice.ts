@@ -191,8 +191,8 @@ export const registerCustomer =
     username: string,
     phone: string,
     gender: GENDER,
-    country: string,
     dob: Date,
+    country: string,
     password: string,
     navigate: NavigateFunction
   ): AppThunk =>
