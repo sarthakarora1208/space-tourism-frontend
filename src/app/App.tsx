@@ -22,6 +22,8 @@ import VendorDashboard from '../features/Vendor/VendorDashboard/VendorDashboard'
 import VendorServices from '../features/Vendor/VendorServices/VendorServices'
 import AddOrEditSpaceService from '../features/Vendor/AddOrEditSpaceService/AddOrEditSpaceService'
 import EditSpaceService from '../features/Vendor/AddOrEditSpaceService/EditSpaceService'
+import EditVendorProfile from '../features/Vendor/EditVendorProfile/EditVendorProfile'
+import VendorProfile from '../features/Vendor/VendorProfile/VendorProfile'
 
 Amplify.configure(awsConfig)
 
@@ -64,6 +66,14 @@ const App: React.FC<IAppProps> = ({}) => {
                     <Route
                       path={ROUTES.ADD_SERVICE}
                       element={<AddOrEditSpaceService />}
+                    />
+                    <Route
+                      path={ROUTES.EDIT_VENDOR_PROFILE}
+                      element={<EditVendorProfile />}
+                    />
+                    <Route
+                      path={ROUTES.VENDOR_PROFILE}
+                      element={<VendorProfile />}
                     />
                     <Route
                       path={ROUTES.editService()}

@@ -57,7 +57,7 @@ export const RegisterForm: React.FC<
           Create a Customer account
         </Typography>
         <Typography variant='body1' sx={styles.loginText}>
-          Fill out the form to get started with LiiT Care.
+          Fill out the form to get started.
         </Typography>
         <Stack direction='row' spacing={1}>
           <Typography variant='subtitle2' sx={styles.label1}>

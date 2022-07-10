@@ -1,14 +1,20 @@
+import { Order } from './Order'
+import { Review } from './Review'
+import { SpaceService } from './SpaceService'
 import { User } from './User'
 
 export interface Business {
   id: string
   businessName: string
-  address: string
-  state: string
-  city: string
+  eWallet: string
+  contact: string
+  isVerified: boolean
   country: string
-  postalCode: string
+  address: string
   createdAt: Date
   updatedAt: Date
   users: User[]
+  order: Order[]
+  spaceServices: SpaceService[]
+  reviews: Review[]
 }

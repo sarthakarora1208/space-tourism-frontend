@@ -49,3 +49,4 @@ export const editService = (serviceId = ':serviceId') => {
 
 export const CUSTOMER_PROFILE = `${CUSTOMER_DASHBOARD}/profile`
 export const CUSTOMER_SERVICES = `${CUSTOMER_DASHBOARD}/services`
+export const EDIT_VENDOR_PROFILE = `${VENDOR_DASHBOARD}/edit-profile`

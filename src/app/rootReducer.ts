@@ -4,6 +4,7 @@ import authReducer from '../slices/authSlice'
 import vendorReducer from '../slices/vendorSlice'
 import customerReducer from '../slices/customerSlice'
 import spaceServiceReducer from '../slices/spaceServiceSlice'
+import orderReducer from '../slices/orderSlice'
 
 const rootReducer = combineReducers({
   alert: alertReducer,
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
   customer: customerReducer,
   vendor: vendorReducer,
   spaceService: spaceServiceReducer,
+  order: orderReducer,
 })
 
 export type RootState = ReturnType<typeof rootReducer>

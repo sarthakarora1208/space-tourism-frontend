@@ -107,14 +107,14 @@ const ServicesOfferedCard: React.FC<IServicesOfferedCardProps> = ({
           </Box>
           <Box sx={styles.chargeContainer}>
             <Typography variant='body2' fontWeight='500'>
-              Charges:
+              Rates:
             </Typography>
             <FormControl fullWidth>
               <Select
                 sx={styles.chargesSelect}
                 labelId='charge-select-label'
                 id='charge-select'
-                defaultValue={service.rates[0]}
+                placeholder='Select a rate'
               >
                 {service.rates.map((rate: Rate, index: number) => {
                   if (rate.amount > 0) {
