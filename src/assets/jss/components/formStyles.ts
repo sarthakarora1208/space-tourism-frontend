@@ -24,6 +24,7 @@ const styles = {
     margin: "0px 0px 8px 0px",
     fontFamily: "Inter",
   },
+
 };
 
 export default styles;

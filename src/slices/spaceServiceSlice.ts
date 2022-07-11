@@ -7,11 +7,13 @@ import { NavigateFunction } from 'react-router-dom'
 import { Rate } from '../constants/models/Rate'
 import { uploadImageToS3 } from '../api/s3requests'
 import {
+  bookService,
   CUSTOMER_DASHBOARD,
   editService,
   VENDOR_ORDERS,
 } from '../constants/routes'
 import { getBusinessById } from './businessSlice'
+import { IBankAccount } from '../constants/models/IBankAccount'
 
 export interface SpaceServiceState {
   loading: boolean
@@ -56,6 +58,7 @@ const spaceServiceSlice = createSlice({
     setRates(state, action: PayloadAction<Rate[]>) {
       state.rates = action.payload
     },
+
     addRateToSpaceService(state, action: PayloadAction<Rate>) {
       state.rates = [...state.rates, action.payload]
     },
@@ -265,7 +268,7 @@ export const getSpaceServiceByIdForOrder =
       dispatch(setSpaceServiceImageUrl(spaceService.imageUrl))
       dispatch(getBusinessById(spaceService!.business!.id))
       dispatch(spaceServiceComplete())
-      navigate(`${CUSTOMER_DASHBOARD}/book-service/${id}`)
+      navigate(bookService(id))
     } catch (err: any) {
       const { error } = err.response.data
       dispatch(spaceServiceFailure(error))

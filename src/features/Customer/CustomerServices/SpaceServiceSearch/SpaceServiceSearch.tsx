@@ -27,7 +27,7 @@ export const SpaceServiceSearch = () => {
       >
         {spaceServices.length === 0 && <div>No Space Services found!</div>}
         {spaceServices.map((service) => (
-          <Grid item md={4} sx={{ padding: '1rem' }}>
+          <Grid item md={4} sx={{ padding: '1rem' }} key={service.id}>
             <SpaceServiceCard
               key={service.id}
               serviceId={service.id}

@@ -31,6 +31,7 @@ import CustomerOrder from '../features/Customer/CustomerOrders/CustomerOrder'
 import CustomerProfile from '../features/Customer/CustomerProfile/CustomerProfile'
 import EditCustomerProfile from '../features/Customer/EditCustomerProfile/EditCustomerProfile'
 import CustomerServices from '../features/Customer/CustomerServices/CustomerServices'
+import BookService from '../features/Customer/BookService/BookService'
 
 Amplify.configure(awsConfig)
 
@@ -96,6 +97,10 @@ const App: React.FC<IAppProps> = ({}) => {
                     <Route
                       path={ROUTES.CUSTOMER_DASHBOARD}
                       element={<CustomerDashboard />}
+                    />
+                    <Route
+                      path={ROUTES.bookService()}
+                      element={<BookService />}
                     />
                     <Route
                       path={ROUTES.CUSTOMER_ORDERS}

@@ -46,7 +46,7 @@ const Login: React.FC<ILoginProps> = () => {
       renderedForm = <EnhancedLoginForm navigate={navigate} />
       renderedForm = (
         <EnhancedLoginForm
-          email={customer ? 'dociye5646@lankew.com' : 'lilodi9648@meidir.com'}
+          email={customer ? 'dociye5646@lankew.com' : 'heforec361@leupus.com'}
           password={customer ? '1234567' : '12345678'}
           navigate={navigate}
         />

@@ -1,21 +1,21 @@
-import React, { useState, ReactNode } from "react";
+import React, { useState, ReactNode } from 'react'
 import {
   Box,
   IconButton,
   Divider,
   useTheme,
   useMediaQuery,
-} from "@mui/material";
-import { IoMenu } from "react-icons/io5";
-import { useLocation } from "react-router-dom";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import { Header } from "./Header";
-import { Navbar } from "../Navbar/Navbar";
-import { Footer } from "../Footer/Footer";
-import { Navigator } from "./Navigator";
-import { MobileNavigator } from "./MobileNavigator";
-import { Drawer } from "./StyledDrawer";
-import { DrawerHeader } from "./StylesDrawerHeader";
+} from '@mui/material'
+import { IoMenu } from 'react-icons/io5'
+import { useLocation } from 'react-router-dom'
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
+import { Header } from './Header'
+import { Navbar } from '../Navbar/Navbar'
+import { Footer } from '../Footer/Footer'
+import { Navigator } from './Navigator'
+import { MobileNavigator } from './MobileNavigator'
+import { Drawer } from './StyledDrawer'
+import { DrawerHeader } from './StylesDrawerHeader'
 import {
   HOME,
   ABOUT_US,
@@ -28,25 +28,25 @@ import {
   FAQ,
   VENDOR_REGISTER,
   CUSTOMER_REGISTER,
-} from "../../constants/routes";
-import styles from "../../assets/jss/components/DashboardLayoutStyles/DashboardContainerStyles";
+} from '../../constants/routes'
+import styles from '../../assets/jss/components/DashboardLayoutStyles/DashboardContainerStyles'
 
 interface IDashboardMenu {
-  children: ReactNode | any | null;
+  children: ReactNode | any | null
 }
 
 const DashboardMenu: React.FC<IDashboardMenu> = ({ children }) => {
-  const theme = useTheme();
-  const matches = useMediaQuery(theme.breakpoints.up("md"));
-  const { pathname } = useLocation();
-  const [open, setOpen] = useState(false);
+  const theme = useTheme()
+  const matches = useMediaQuery(theme.breakpoints.up('md'))
+  const { pathname } = useLocation()
+  const [open, setOpen] = useState(true)
   const handleDrawerOpen = () => {
-    setOpen(true);
-  };
+    setOpen(true)
+  }
 
   const handleDrawerClose = () => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
 
   const pathsToExclude: string[] = [
     HOME,
@@ -60,18 +60,18 @@ const DashboardMenu: React.FC<IDashboardMenu> = ({ children }) => {
     FAQ,
     VENDOR_REGISTER,
     CUSTOMER_REGISTER,
-  ];
+  ]
 
   if (!pathsToExclude.includes(pathname)) {
     return (
-      <Box sx={{ display: "flex" }}>
+      <Box sx={{ display: 'flex' }}>
         <Header open={open} handleDrawerOpen={handleDrawerOpen} />
 
         <Drawer
           sx={{
-            backgroundColor: "primary.main",
+            backgroundColor: 'primary.main',
           }}
-          variant="permanent"
+          variant='permanent'
           open={open}
         >
           {matches && (
@@ -87,10 +87,10 @@ const DashboardMenu: React.FC<IDashboardMenu> = ({ children }) => {
                     </IconButton>
                   ) : (
                     <IconButton
-                      color="inherit"
-                      aria-label="open drawer"
+                      color='inherit'
+                      aria-label='open drawer'
                       onClick={handleDrawerOpen}
-                      edge="start"
+                      edge='start'
                       sx={styles.menuIcon}
                     >
                       <IoMenu fontSize={24} />
@@ -103,11 +103,11 @@ const DashboardMenu: React.FC<IDashboardMenu> = ({ children }) => {
           )}
           {matches ? <Navigator /> : <MobileNavigator />}
         </Drawer>
-        <Box component="main" sx={styles.container}>
+        <Box component='main' sx={styles.container}>
           {children}
         </Box>
       </Box>
-    );
+    )
   }
   return (
     <>
@@ -115,6 +115,6 @@ const DashboardMenu: React.FC<IDashboardMenu> = ({ children }) => {
       {children}
       <Footer />
     </>
-  );
-};
-export default DashboardMenu;
+  )
+}
+export default DashboardMenu
