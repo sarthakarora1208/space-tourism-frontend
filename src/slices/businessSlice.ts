@@ -8,7 +8,11 @@ import { getVendorById } from './vendorSlice'
 import { IBankAccount } from '../constants/models/IBankAccount'
 import { BankResponse } from '../constants/models/BankResponse'
 import { Transaction } from '../constants/models/Transaction'
-import { viewVirtualAccountTransactions } from '../constants/routes'
+import {
+  CUSTOMER_ORDERS,
+  VENDOR_ORDERS,
+  viewVirtualAccountTransactions,
+} from '../constants/routes'
 
 export interface businessState {
   loading: boolean
@@ -111,9 +115,14 @@ export const getVirtualAccounts =
     try {
       dispatch(businessStart())
       const store = getState()
-      const bankAccounts = await REQUESTS.getVirtualAccounts(
-        store.vendor.vendor!.business!.id
-      )
+      let businessId = ''
+      if (store.vendor && store.vendor.vendor && store.vendor.vendor.business) {
+        businessId = store.vendor.vendor!.business!.id
+      } else {
+        businessId = store.spaceService.spaceService?.business?.id!
+      }
+
+      const bankAccounts = await REQUESTS.getVirtualAccounts(businessId)
       dispatch(setBankAccounts(bankAccounts))
       dispatch(businessComplete())
     } catch (err: any) {
@@ -135,6 +144,26 @@ export const getTransactionsForBankAccount =
       dispatch(setCurrency(currency))
       navigate(viewVirtualAccountTransactions(id))
 
+      dispatch(businessComplete())
+    } catch (err: any) {
+      const { error } = err.response.data
+      dispatch(businessFailure(error))
+      dispatch(setErrorMsg(error))
+    }
+  }
+
+export const simulateBankTransfer =
+  (
+    issued_bank_account: string,
+    amount: number,
+    currency: string,
+    navigate: NavigateFunction
+  ): AppThunk =>
+  async (dispatch, getState) => {
+    try {
+      dispatch(businessStart())
+      await REQUESTS.simulateBankTransfer(issued_bank_account, amount, currency)
+      navigate(CUSTOMER_ORDERS)
       dispatch(businessComplete())
     } catch (err: any) {
       const { error } = err.response.data

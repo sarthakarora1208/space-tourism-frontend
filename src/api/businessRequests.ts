@@ -53,3 +53,23 @@ export async function getTransactionsForBankAccount(id: string) {
     throw err
   }
 }
+
+export async function simulateBankTransfer(
+  issued_bank_account: string,
+  amount: number,
+  currency: string
+) {
+  try {
+    const res = await API.post<{ data: boolean; success: boolean }>(
+      `${BUSINESS_ROUTE}/simulate-transfer`,
+      {
+        issued_bank_account,
+        amount,
+        currency,
+      }
+    )
+    return res.data.data
+  } catch (err) {
+    throw err
+  }
+}
