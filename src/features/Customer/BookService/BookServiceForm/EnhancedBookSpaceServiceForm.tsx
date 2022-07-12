@@ -19,6 +19,8 @@ export interface EnhancedBookSpaceServiceFormProps {
   date?: Date
   startTime?: Date
   endTime?: Date
+  isOpen: boolean
+  handleClose: any
   navigate: NavigateFunction
 }
 
@@ -40,7 +42,7 @@ const EnhancedBookSpaceServiceForm = withFormik<
     amount: Yup.number().min(0, 'Minimum amount is 0'),
   }),
   handleSubmit: (values, { setSubmitting, props }) => {
-    const { navigate } = props
+    const { navigate, isOpen, handleClose } = props
     const { date, endTime, startTime } = values
 
     startTime.setDate(date.getDate())
@@ -50,6 +52,7 @@ const EnhancedBookSpaceServiceForm = withFormik<
     endTime.setFullYear(date.getFullYear())
     endTime.setMonth(date.getMonth())
 
+    handleClose()
     setSubmitting(false)
   },
   displayName: 'BookService Form',

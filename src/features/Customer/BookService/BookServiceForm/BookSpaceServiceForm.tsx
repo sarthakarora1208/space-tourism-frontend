@@ -22,7 +22,12 @@ import { EnhancedBookSpaceServiceFormValues } from './EnhancedBookSpaceServiceFo
 import styles from '../../../../assets/jss/components/FormStyles/formStyles'
 import { RootState } from '../../../../app/rootReducer'
 import { DisplayFormikState } from '../../../../components/DisplayFormikState'
-import { getVirtualAccounts } from '../../../../slices/businessSlice'
+import {
+  getVirtualAccounts,
+  setAmount,
+  setCurrency,
+  setIssuedBankAccount,
+} from '../../../../slices/businessSlice'
 import { Rate } from '../../../../constants/models/Rate'
 import RocketLaunchIcon from '@mui/icons-material/RocketLaunch'
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance'
@@ -65,104 +70,19 @@ export const BookSpaceServiceForm: React.FC<
       : spaceService!.rates[0].country
   )
 
-  let renderedBankAccount = <></>
-
   const handleSelectChange = (event: SelectChangeEvent) => {
     setCountry(event.target.value as string)
-    renderedBankAccount = bankAccounts
-      .filter((bankAccount) => {
-        return bankAccount.country_iso === event.target.value
-      })
-      .map((bankAccount) => {
-        return (
-          <Grid item>
-            <Grid container direction='column' spacing={2}>
-              <Grid
-                item
-                xs={12}
-                md={12}
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  gap: '0.5rem',
-                  border: '2px solid blue',
-                }}
-              >
-                <Typography variant='body2' fontWeight='500'>
-                  <strong>Account Id :</strong>
-                </Typography>
-                <Typography variant='body2' color='text.secondary'>
-                  {bankAccount.account_id}
-                </Typography>
-              </Grid>
-              <Grid
-                item
-                xs={12}
-                md={12}
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  gap: '0.5rem',
-                }}
-              >
-                <Typography variant='body2' fontWeight='500'>
-                  <strong>Account Type:</strong>
-                </Typography>
-                <Typography variant='body2' color='text.secondary'>
-                  {bankAccount.account_id_type}
-                </Typography>
-              </Grid>
-              <Grid
-                item
-                xs={12}
-                md={12}
-                flexDirection='row'
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  gap: '0.5rem',
-                }}
-              >
-                <Typography variant='body2' fontWeight='500'>
-                  <strong>Currency:</strong>
-                </Typography>
-                <Typography variant='body2' color='text.secondary'>
-                  {bankAccount.currency}
-                </Typography>
-              </Grid>
-              <Grid
-                item
-                xs={12}
-                md={12}
-                flexDirection='row'
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  gap: '0.5rem',
-                }}
-              >
-                <Typography variant='body2' fontWeight='500'>
-                  <strong>Country Code:</strong>
-                </Typography>
-                <Typography variant='body2' color='text.secondary'>
-                  {bankAccount.country_iso}
-                </Typography>
-              </Grid>
-
-              <Grid
-                item
-                xs={12}
-                md={12}
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  gap: '0.5rem',
-                }}
-              ></Grid>
-            </Grid>
-          </Grid>
-        )
-      })[0]
+    let bankAccount = bankAccounts.filter((bankAccount) => {
+      return bankAccount.country_iso === event.target.value
+    })[0]
+    dispatch(setCurrency(bankAccount!.currency))
+    dispatch(
+      setAmount(
+        spaceService!.rates.find((rate) => rate.country === country)!.amount ||
+          0
+      )
+    )
+    dispatch(setIssuedBankAccount(bankAccount!.issuing_id))
   }
 
   useEffect(() => {
@@ -234,6 +154,7 @@ export const BookSpaceServiceForm: React.FC<
                     padding: '1rem',
                     width: '100%',
                   }}
+                  key={bankAccount.issuing_id}
                 >
                   <Grid item md={12}>
                     <Typography variant='h6' my={2}>

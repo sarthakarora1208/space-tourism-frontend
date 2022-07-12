@@ -10,7 +10,6 @@ import { BankResponse } from '../constants/models/BankResponse'
 import { Transaction } from '../constants/models/Transaction'
 import {
   CUSTOMER_ORDERS,
-  VENDOR_ORDERS,
   viewVirtualAccountTransactions,
 } from '../constants/routes'
 
@@ -21,6 +20,8 @@ export interface businessState {
   bankAccounts: IBankAccount[]
   bankAccount: BankResponse | null
   transactions: Transaction[]
+  issued_bank_account: string
+  amount: number
   currency: string
 }
 
@@ -32,6 +33,8 @@ export const initialState: businessState = {
   bankAccount: null,
   transactions: [],
   currency: '',
+  amount: 0,
+  issued_bank_account: '',
 }
 
 const businessSlice = createSlice({
@@ -54,6 +57,12 @@ const businessSlice = createSlice({
     setCurrency(state, action: PayloadAction<string>) {
       state.currency = action.payload
     },
+    setAmount(state, action: PayloadAction<number>) {
+      state.amount = action.payload
+    },
+    setIssuedBankAccount(state, action: PayloadAction<string>) {
+      state.issued_bank_account = action.payload
+    },
     setTransactions(state, action: PayloadAction<Transaction[]>) {
       state.transactions = action.payload
     },
@@ -74,6 +83,8 @@ export const {
   setCurrency,
   setBankAccount,
   setTransactions,
+  setAmount,
+  setIssuedBankAccount,
   businessFailure,
   businessComplete,
 } = businessSlice.actions
@@ -153,15 +164,12 @@ export const getTransactionsForBankAccount =
   }
 
 export const simulateBankTransfer =
-  (
-    issued_bank_account: string,
-    amount: number,
-    currency: string,
-    navigate: NavigateFunction
-  ): AppThunk =>
+  (navigate: NavigateFunction): AppThunk =>
   async (dispatch, getState) => {
     try {
       dispatch(businessStart())
+      const store = getState()
+      let { issued_bank_account, amount, currency } = store.business
       await REQUESTS.simulateBankTransfer(issued_bank_account, amount, currency)
       navigate(CUSTOMER_ORDERS)
       dispatch(businessComplete())

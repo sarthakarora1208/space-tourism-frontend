@@ -13,11 +13,13 @@ import styles from '../../../assets/jss/components/FormStyles/formStyles'
 
 import { SpaceServiceOrderSummary } from './OrderSummary/SpaceServiceOrderSummary'
 import EnhancedBookSpaceServiceForm from './BookServiceForm/EnhancedBookSpaceServiceForm'
+import { ConfirmOrderDialog } from '../../../components/ConfirmOrderDialog'
 
 interface IBookServiceProps {}
 
 const BookService: React.FC<IBookServiceProps> = () => {
-  const { serviceId } = useParams()
+  const [isOpen, setIsOpen] = React.useState(false)
+
   const navigate = useNavigate()
 
   const dispatch = useDispatch()
@@ -30,8 +32,18 @@ const BookService: React.FC<IBookServiceProps> = () => {
 
   useEffect(() => {}, [])
 
+  const handleClose = () => {
+    setIsOpen(!isOpen)
+  }
+
   let orderSummary = <SpaceServiceOrderSummary />
-  let renderForm = <EnhancedBookSpaceServiceForm navigate={navigate} />
+  let renderForm = (
+    <EnhancedBookSpaceServiceForm
+      navigate={navigate}
+      isOpen={isOpen}
+      handleClose={handleClose}
+    />
+  )
 
   return (
     <div>
@@ -54,6 +66,7 @@ const BookService: React.FC<IBookServiceProps> = () => {
           </Grid>
         </Container>
       </div>
+      <ConfirmOrderDialog isOpen={isOpen} handleClose={handleClose} />
     </div>
   )
 }

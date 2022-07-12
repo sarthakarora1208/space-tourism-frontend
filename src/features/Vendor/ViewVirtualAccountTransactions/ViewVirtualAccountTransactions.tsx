@@ -76,9 +76,9 @@ const ViewVirtualAccountTransactions: React.FC<
         <Table stickyHeader aria-label='simple table'>
           <TableHead sx={tableStyles.tableHead}>
             <TableCell sx={tableStyles.tableCellForHead}>S.No.</TableCell>
+            <TableCell sx={tableStyles.tableCellForHead}>ID</TableCell>
             <TableCell sx={tableStyles.tableCellForHead}>Amount</TableCell>
             <TableCell sx={tableStyles.tableCellForHead}>Currency</TableCell>
-            <TableCell sx={tableStyles.tableCellForHead}>ID</TableCell>
             <TableCell sx={tableStyles.tableCellForHead}>Created At</TableCell>
           </TableHead>
           <TableBody>
@@ -100,15 +100,15 @@ const ViewVirtualAccountTransactions: React.FC<
                     {key + 1}
                   </TableCell>
                   <TableCell sx={tableStyles.tableCellForBody}>
+                    <em>{transaction.id}</em>
+                  </TableCell>
+
+                  <TableCell sx={tableStyles.tableCellForBody}>
                     {transaction.amount}
                   </TableCell>
                   <TableCell sx={tableStyles.tableCellForBody}>
                     {transaction.currency}
                   </TableCell>
-                  <TableCell sx={tableStyles.tableCellForBody}>
-                    <em>{transaction.id}</em>
-                  </TableCell>
-
                   <TableCell sx={tableStyles.tableCellForBody}>
                     {new Date(transaction.created_at).toLocaleTimeString()}
                     &nbsp;
