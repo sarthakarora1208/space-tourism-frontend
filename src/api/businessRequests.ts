@@ -2,6 +2,8 @@ import API from './api'
 import { Business } from '../constants/models/Business'
 import { BUSINESS_ROUTE } from '../constants/routes'
 import { IBankAccount } from '../constants/models/IBankAccount'
+import { BankResponse } from '../constants/models/BankResponse'
+import { Transaction } from '../constants/models/Transaction'
 
 export async function getBusinessById(businessId: string) {
   try {
@@ -30,6 +32,22 @@ export async function getVirtualAccounts(businessId: string) {
     const res = await API.get<{ data: IBankAccount[]; success: boolean }>(
       `${BUSINESS_ROUTE}/${businessId}/accounts`
     )
+    return res.data.data
+  } catch (err) {
+    throw err
+  }
+}
+
+export async function getTransactionsForBankAccount(id: string) {
+  try {
+    const res = await API.get<{
+      data: {
+        bank_account: BankResponse
+        transactions: Transaction[]
+        currency: string
+      }
+      success: boolean
+    }>(`${BUSINESS_ROUTE}/${id}/transactions`)
     return res.data.data
   } catch (err) {
     throw err

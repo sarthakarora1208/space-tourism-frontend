@@ -256,11 +256,9 @@ export const BookSpaceServiceForm: React.FC<
                           <strong>Amount to transfer:</strong>
                         </Typography>
                         <Typography variant='body2' color='text.secondary'>
-                          {
-                            spaceService!.rates.find(
-                              (rate) => rate.country === country
-                            )!.amount
-                          }
+                          {spaceService!.rates.find(
+                            (rate) => rate.country === country
+                          )!.amount || 0}
                         </Typography>
                       </Grid>
                       <Grid
@@ -354,6 +352,10 @@ export const BookSpaceServiceForm: React.FC<
             <em>
               {' '}
               Keyano partners with Rapyd to make multi-country payments possible
+              Each Virtual IBAN Account (international bank account number)
+              functions like a local bank account for collecting payments. You
+              can make online or offline bank transfers using the assigned
+              virtual account number in their local currency.
             </em>
           </Typography>
         </Card>

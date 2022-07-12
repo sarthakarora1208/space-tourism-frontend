@@ -32,6 +32,8 @@ import CustomerProfile from '../features/Customer/CustomerProfile/CustomerProfil
 import EditCustomerProfile from '../features/Customer/EditCustomerProfile/EditCustomerProfile'
 import CustomerServices from '../features/Customer/CustomerServices/CustomerServices'
 import BookService from '../features/Customer/BookService/BookService'
+import VirtualAccounts from '../features/Vendor/VirtualAccounts/VirtualAccounts'
+import ViewVirtualAccountTransactions from '../features/Vendor/ViewVirtualAccountTransactions/ViewVirtualAccountTransactions'
 
 Amplify.configure(awsConfig)
 
@@ -90,6 +92,14 @@ const App: React.FC<IAppProps> = ({}) => {
                     <Route
                       path={ROUTES.editService()}
                       element={<EditSpaceService />}
+                    />
+                    <Route
+                      path={ROUTES.VENDOR_VIRTUAL_ACCOUNTS}
+                      element={<VirtualAccounts />}
+                    />
+                    <Route
+                      path={ROUTES.viewVirtualAccountTransactions()}
+                      element={<ViewVirtualAccountTransactions />}
                     />
                   </Route>
                   {/* Customer Dashboard */}

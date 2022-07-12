@@ -6,12 +6,18 @@ import * as REQUESTS from '../api/businessRequests'
 import { Business } from '../constants/models/Business'
 import { getVendorById } from './vendorSlice'
 import { IBankAccount } from '../constants/models/IBankAccount'
+import { BankResponse } from '../constants/models/BankResponse'
+import { Transaction } from '../constants/models/Transaction'
+import { viewVirtualAccountTransactions } from '../constants/routes'
 
 export interface businessState {
   loading: boolean
   error: string | null
   business: Business | null
   bankAccounts: IBankAccount[]
+  bankAccount: BankResponse | null
+  transactions: Transaction[]
+  currency: string
 }
 
 export const initialState: businessState = {
@@ -19,6 +25,9 @@ export const initialState: businessState = {
   error: null,
   business: null,
   bankAccounts: [],
+  bankAccount: null,
+  transactions: [],
+  currency: '',
 }
 
 const businessSlice = createSlice({
@@ -35,6 +44,15 @@ const businessSlice = createSlice({
     setBankAccounts(state, action: PayloadAction<IBankAccount[]>) {
       state.bankAccounts = action.payload
     },
+    setBankAccount(state, action: PayloadAction<BankResponse>) {
+      state.bankAccount = action.payload
+    },
+    setCurrency(state, action: PayloadAction<string>) {
+      state.currency = action.payload
+    },
+    setTransactions(state, action: PayloadAction<Transaction[]>) {
+      state.transactions = action.payload
+    },
     businessFailure(state, action: PayloadAction<string>) {
       state.loading = false
       state.error = action.payload ? action.payload : 'There is some error'
@@ -49,6 +67,9 @@ export const {
   businessStart,
   setBusiness,
   setBankAccounts,
+  setCurrency,
+  setBankAccount,
+  setTransactions,
   businessFailure,
   businessComplete,
 } = businessSlice.actions
@@ -91,9 +112,29 @@ export const getVirtualAccounts =
       dispatch(businessStart())
       const store = getState()
       const bankAccounts = await REQUESTS.getVirtualAccounts(
-        store.spaceService.spaceService!.business!.id
+        store.vendor.vendor!.business!.id
       )
       dispatch(setBankAccounts(bankAccounts))
+      dispatch(businessComplete())
+    } catch (err: any) {
+      const { error } = err.response.data
+      dispatch(businessFailure(error))
+      dispatch(setErrorMsg(error))
+    }
+  }
+
+export const getTransactionsForBankAccount =
+  (id: string, navigate: NavigateFunction): AppThunk =>
+  async (dispatch, getState) => {
+    try {
+      dispatch(businessStart())
+      let { bank_account, transactions, currency } =
+        await REQUESTS.getTransactionsForBankAccount(id)
+      dispatch(setBankAccount(bank_account))
+      dispatch(setTransactions(transactions))
+      dispatch(setCurrency(currency))
+      navigate(viewVirtualAccountTransactions(id))
+
       dispatch(businessComplete())
     } catch (err: any) {
       const { error } = err.response.data

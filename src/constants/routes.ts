@@ -40,6 +40,14 @@ export const VENDOR_DASHBOARD = `${VENDOR_ROUTE}${DASHBOARD_ROUTE}`
 export const VENDOR_PROFILE = `${VENDOR_DASHBOARD}/profile`
 export const VENDOR_SERVICES = `${VENDOR_DASHBOARD}/services`
 export const VENDOR_ORDERS = `${VENDOR_DASHBOARD}${ORDER_ROUTE}`
+export const VENDOR_VIRTUAL_ACCOUNTS = `${VENDOR_DASHBOARD}/virtual-accounts`
+
+export const viewVirtualAccountTransactions = (
+  issuedBankAccountId = ':issueBankAccountId'
+) => {
+  return `${VENDOR_DASHBOARD}/virtual-accounts/${issuedBankAccountId}/transactions`
+}
+
 export const ADD_SERVICE = `${VENDOR_ROUTE}/add`
 export const EDIT_SERVICE = `${VENDOR_ROUTE}/:serviceId/edit`
 
