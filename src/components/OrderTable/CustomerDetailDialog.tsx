@@ -38,14 +38,13 @@ export const CustomerDetailDialog: React.FC<ICustomerProps> = ({
       handleClose={handleClose}
       aria-labelledby='modal-modal-title'
       aria-describedby='modal-modal-description'
-      title='Open customer details'
+      title='Customer details'
     >
       <Stack spacing={2}>
         <Stack
           spacing={2}
           direction='row'
           sx={{
-            backgroundColor: '#fafafa',
             padding: '1rem',
             borderRadius: '0.5rem',
           }}
@@ -53,7 +52,7 @@ export const CustomerDetailDialog: React.FC<ICustomerProps> = ({
           <Avatar
             alt={user.name}
             src={user.profileImageUrl}
-            sx={{ width: 75, height: 75 }}
+            sx={{ width: 50, height: 50 }}
           />
           <Box>
             <Stack direction='row' spacing={1} alignItems='center'>
@@ -65,15 +64,6 @@ export const CustomerDetailDialog: React.FC<ICustomerProps> = ({
 
             <Stack direction='row' spacing={2} alignItems='center'>
               <Stack direction='row' spacing={1} alignItems='center'>
-                {/* <IoMdCall /> */}
-                <Typography fontWeight='700'>Contact:</Typography>
-                <Link color='info.main'>
-                  <a href={`tel:${user.phone}`}>{user.phone}</a>
-                </Link>
-              </Stack>
-            </Stack>
-            <Stack direction='row' spacing={2} alignItems='center'>
-              <Stack direction='row' spacing={1} alignItems='center'>
                 {/* <IoMail /> */}
                 <Typography fontWeight='700'>Email:</Typography>
 
@@ -81,13 +71,6 @@ export const CustomerDetailDialog: React.FC<ICustomerProps> = ({
                   <a href={`mailto:${user.email}`}>{user.email}</a>
                 </Link>
               </Stack>
-            </Stack>
-
-            <Stack direction='row' spacing={1} alignItems='baseline'>
-              {/* <BsFillHouseFill /> */}
-              <Typography>
-                <b>Address:</b> {user.address}
-              </Typography>
             </Stack>
           </Box>
         </Stack>

@@ -45,7 +45,11 @@ import { Business } from '../../../constants/models/Business'
 
 import Status from '../../../components/OrderTable/Status'
 
-import { completeOrder, setOrder } from '../../../slices/orderSlice'
+import {
+  completeOrder,
+  markOrderAsOngoing,
+  setOrder,
+} from '../../../slices/orderSlice'
 import collapsibleStyles from '../../../assets/jss/components/TableStyles/collapsibleStyles'
 import { VendorDetailDialogMobile } from '../../../components/OrderTable/VendorDetailDialogMobile'
 import { User } from '../../../constants/models/User'
@@ -53,6 +57,8 @@ import { User } from '../../../constants/models/User'
 import { CustomerDetailDialogMobile } from '../../../components/OrderTable/CustomerDetailDialogMobile'
 import { CancellationDialog } from '../../../components/OrderTable/CancelForm/CancellationDialog'
 import { CustomerDetailDialog } from '../../../components/OrderTable/CustomerDetailDialog'
+import { MarkOrderAsOngoingDialog } from '../../../components/MarkOrderAsOngoingDialog'
+import { CompleteDialog } from '../../../components/OrderTable/CompleteDialog'
 
 interface IVendorOngoingOrdersProps {}
 
@@ -80,313 +86,104 @@ export const VendorOngoingOrders: React.FC<IVendorOngoingOrdersProps> = () => {
     setIsContactDialogOpenForCustomerMobile,
   ] = useState(false)
   const [isCancelModalOpen, setIsCancelModalOpen] = useState(false)
+
+  const [isOngoingModalOpen, setIsOngoingModalOpen] = useState(false)
+  const [isCompleteModalOpen, setIsCompleteModalOpen] = useState(false)
+
   const [open, setOpen] = useState(false)
 
   let renderedOrders
 
   if (ongoingOrders.length > 0) {
-    if (!matches) {
-      renderedOrders = (
-        <Stack spacing={2}>
-          {ongoingOrders.map((order) => {
-            const {
-              id,
-              createdAt,
-              serviceName,
-              startTime,
-              endTime,
-              amount,
-              status,
-              user,
-              business,
-              spaceService,
-            } = order
-            const service = spaceService
-            return (
-              <Card sx={collapsibleStyles.root} key={id}>
-                <Stack spacing={1}>
-                  <Stack
-                    direction='row'
-                    alignItems='start'
-                    mb={1}
-                    justifyContent='space-between'
-                  >
-                    <Stack direction='row' alignItems='start' spacing={1.5}>
-                      <Avatar
-                        alt={service.name}
-                        src={service.imageUrl}
-                        sx={{ width: 32, height: 32 }}
-                      />
-                      <Box
-                        sx={{
-                          display: 'flex',
-                          flexDirection: 'column',
-                          gap: '0.5rem',
+    renderedOrders = (
+      <TableContainer>
+        <Table stickyHeader aria-label='simple table'>
+          <TableHead sx={tableStyles.tableHead}>
+            <TableCell sx={tableStyles.tableCellForHead}>
+              Customer Name
+            </TableCell>
+            <TableCell sx={tableStyles.tableCellForHead}>Flight name</TableCell>
+            <TableCell sx={tableStyles.tableCellForHead}>
+              Time of booking
+            </TableCell>
+            <TableCell sx={tableStyles.tableCellForHead}>Amount</TableCell>
+            <TableCell sx={tableStyles.tableCellForHead}>Action</TableCell>
+            <TableCell sx={tableStyles.tableCellForHead}>Status</TableCell>
+          </TableHead>
+          <TableBody>
+            {ongoingOrders.map((order) => {
+              const {
+                id,
+                createdAt,
+                serviceName,
+                currency,
+                startTime,
+                endTime,
+                amount,
+                status,
+                user,
+                business,
+                spaceService,
+              } = order
+              const service = spaceService
+              return (
+                <StyledTableRow key={id}>
+                  <TableCell sx={tableStyles.tableCellForBody}>
+                    <Typography variant='body2'>
+                      {user?.name}
+                      <IconButton
+                        size='small'
+                        onClick={() => {
+                          setIsContactDialogOpenForCustomer(true)
+                          setContactModalDetailsForCustomer({
+                            user,
+                          })
                         }}
                       >
-                        <Typography variant='body1' fontWeight='500'>
-                          {serviceName}
-                        </Typography>
-                      </Box>
-                    </Stack>
-                    <Stack direction='row' alignItems='center' spacing={1}>
-                      <IconButton
-                        sx={{ padding: '0' }}
-                        onClick={() => setOpen(!open)}
-                      >
-                        {open ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
+                        <InfoIcon sx={tableStyles.infoIcon} fontSize='small' />
                       </IconButton>
-                    </Stack>
-                  </Stack>
-
-                  <Stack
-                    direction='row'
-                    alignItems='center'
-                    spacing={2}
-                    justifyContent='space-between'
-                  >
-                    <Typography variant='body2' fontWeight='500'>
-                      Status
                     </Typography>
+                  </TableCell>
+                  <TableCell sx={tableStyles.tableCellForBody}>
+                    <Typography variant='body2'>{service.name}</Typography>
+                  </TableCell>
+                  <TableCell sx={tableStyles.tableCellForBody}>
+                    <Typography variant='body2'>
+                      {format(new Date(createdAt), 'hh:mm a, dd MMMM yyyy ')}
+                    </Typography>
+                  </TableCell>
+                  <TableCell sx={tableStyles.tableCellForBody}>
+                    {amount} {currency}
+                  </TableCell>
+                  <TableCell sx={tableStyles.tableCellForBody}>
+                    <Box display='flex' justifyContent='center' gap='0rem'>
+                      <IconButton
+                        onClick={() => {
+                          dispatch(setOrder(order))
+                          setIsCompleteModalOpen(true)
+                        }}
+                        disabled={Date.now() < new Date(endTime).getTime()}
+                      >
+                        <FcCheckmark />
+                      </IconButton>
+                    </Box>
+                  </TableCell>
+
+                  <TableCell sx={tableStyles.tableCellForBody}>
                     <Status status={ORDER_STATUS[status]} />
-                  </Stack>
-                  <Stack
-                    direction='row'
-                    alignItems='center'
-                    spacing={2}
-                    justifyContent='space-between'
-                  >
-                    <Typography variant='body2' fontWeight='500'>
-                      Date
-                    </Typography>
-                    <Typography variant='body2'>{`${format(
-                      new Date(endTime),
-                      'dd MMM yyyy'
-                    )}`}</Typography>
-                  </Stack>
-                  <Stack
-                    direction='row'
-                    alignItems='center'
-                    spacing={2}
-                    justifyContent='space-between'
-                  >
-                    <Typography variant='body2' fontWeight='500'>
-                      Time
-                    </Typography>
-                    <Typography variant='body2'>{`${format(
-                      new Date(startTime),
-                      'KK:mm a'
-                    )} - ${format(new Date(endTime), 'KK:mm a')}`}</Typography>
-                  </Stack>
-                </Stack>
-                <Collapse in={open} timeout='auto' unmountOnExit>
-                  <Stack spacing={1} mt={2}>
-                    <Stack
-                      direction='row'
-                      alignItems='center'
-                      spacing={2}
-                      justifyContent='space-between'
-                    >
-                      <Typography variant='body2' fontWeight='500'>
-                        Customer Info
-                      </Typography>
-                      <Stack direction='row' spacing={1}>
-                        <Button
-                          onClick={() => {
-                            setIsContactDialogOpenForCustomer(true)
-                            setContactModalDetailsForCustomer({
-                              user,
-                            })
-                          }}
-                          size='small'
-                          variant='text'
-                          sx={tableStyles.infoIcon}
-                          endIcon={<InfoIcon />}
-                        >
-                          <Typography variant='body2'>{user?.name}</Typography>
-                        </Button>
-                      </Stack>
-                    </Stack>
-
-                    <Stack
-                      direction='row'
-                      alignItems='center'
-                      spacing={2}
-                      justifyContent='space-between'
-                    >
-                      <Typography variant='body2' fontWeight='500'>
-                        Price
-                      </Typography>
-                      <Typography variant='body2'>
-                        ${(0.807 * amount).toFixed(2)}
-                      </Typography>
-                    </Stack>
-
-                    <Stack
-                      direction='row'
-                      alignItems='center'
-                      spacing={2}
-                      justifyContent='space-between'
-                    >
-                      <Typography variant='body2' fontWeight='500'>
-                        Action
-                      </Typography>
-
-                      <Box display='flex' justifyContent='center' gap='0.5rem'>
-                        <IconButton
-                          disabled={
-                            getHours(new Date(startTime)) -
-                              getHours(new Date()) ===
-                            1
-                          }
-                          sx={
-                            new Date() > new Date(startTime)
-                              ? { display: 'none' }
-                              : {}
-                          }
-                          size='small'
-                          onClick={() => {
-                            dispatch(setOrder(order))
-                            setIsCancelModalOpen(true)
-                          }}
-                        >
-                          <FcCancel fontSize={20} />
-                        </IconButton>
-                      </Box>
-                    </Stack>
-                  </Stack>
-                </Collapse>
-                {contactModalDetailsCustomer !== undefined && (
-                  <CustomerDetailDialogMobile
-                    user={contactModalDetailsCustomer!.user}
-                    handleClose={() => {
-                      setIsContactDialogOpenForCustomer(false)
-                    }}
-                    isOpen={isContactDialogOpenForCustomer}
-                  />
-                )}
-              </Card>
-            )
-          })}
-        </Stack>
-      )
-    } else {
-      renderedOrders = (
-        <TableContainer>
-          <Table stickyHeader aria-label='simple table'>
-            <TableHead sx={tableStyles.tableHead}>
-              <TableCell sx={tableStyles.tableCellForHead}>
-                {SERVICE_NAME}
-              </TableCell>
-              <TableCell sx={tableStyles.tableCellForHead}>
-                {CUSTOMER}
-              </TableCell>
-              <TableCell sx={tableStyles.tableCellForHead}>{DATE}</TableCell>
-              <TableCell sx={tableStyles.tableCellForHead}>{TIMING}</TableCell>
-              <TableCell sx={tableStyles.tableCellForHead}>{PRICE}</TableCell>
-              <TableCell sx={tableStyles.tableCellForHead}>{ACTION}</TableCell>
-              <TableCell sx={tableStyles.tableCellForHead}>{STATUS}</TableCell>
-            </TableHead>
-            <TableBody>
-              {ongoingOrders.map((order) => {
-                const {
-                  id,
-                  createdAt,
-                  serviceName,
-                  startTime,
-                  endTime,
-                  amount,
-                  status,
-                  user,
-                  business,
-                  spaceService,
-                } = order
-                const service = spaceService
-                return (
-                  <StyledTableRow key={id}>
-                    <TableCell sx={tableStyles.tableCellForBody}>
-                      <Typography variant='body2'>
-                        <CardHeader
-                          avatar={
-                            <Avatar alt={service.name} src={service.imageUrl} />
-                          }
-                          title={service.name}
-                        />
-                      </Typography>
-                    </TableCell>
-                    <TableCell sx={tableStyles.tableCellForBody}>
-                      <Typography variant='body2'>
-                        {user?.name}
-                        <IconButton
-                          size='small'
-                          onClick={() => {
-                            setIsContactDialogOpenForCustomer(true)
-                            setContactModalDetailsForCustomer({
-                              user,
-                            })
-                          }}
-                        >
-                          <InfoIcon
-                            sx={tableStyles.infoIcon}
-                            fontSize='small'
-                          />
-                        </IconButton>
-                      </Typography>
-                    </TableCell>
-                    <TableCell sx={tableStyles.tableCellForBody}>
-                      <Typography variant='body2'>
-                        {format(new Date(endTime), 'eeee, dd MMM yyyy')}
-                      </Typography>
-                    </TableCell>
-                    <TableCell sx={tableStyles.tableCellForBody}>
-                      <Typography variant='body2'>
-                        {format(new Date(startTime), 'kk:mm')} -{' '}
-                        {format(new Date(endTime), 'kk:mm')}
-                      </Typography>
-                    </TableCell>
-
-                    <TableCell sx={tableStyles.tableCellForBody}>
-                      $ {(0.807 * amount).toFixed(2)}
-                    </TableCell>
-
-                    <TableCell sx={tableStyles.tableCellForBody}>
-                      <Box display='flex' justifyContent='center' gap='0rem'>
-                        <IconButton
-                          disabled={
-                            getHours(new Date(startTime)) -
-                              getHours(new Date()) ===
-                            1
-                          }
-                          sx={
-                            new Date() > new Date(startTime)
-                              ? { display: 'none' }
-                              : {}
-                          }
-                          onClick={() => {
-                            dispatch(setOrder(order))
-                            setIsCancelModalOpen(true)
-                          }}
-                        >
-                          <FcCancel />
-                        </IconButton>
-                      </Box>
-                    </TableCell>
-                    <TableCell sx={tableStyles.tableCellForBody}>
-                      <Status status={ORDER_STATUS[status]} />
-                    </TableCell>
-                  </StyledTableRow>
-                )
-              })}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      )
-    }
+                  </TableCell>
+                </StyledTableRow>
+              )
+            })}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    )
   } else if (ongoingOrders.length === 0) {
     renderedOrders = (
       <Box sx={{ textAlign: 'center' }}>
         <Typography variant='body1' fontWeight='500'>
-          No Ongoing Orders
+          No bookings yet
         </Typography>
       </Box>
     )
@@ -402,7 +199,7 @@ export const VendorOngoingOrders: React.FC<IVendorOngoingOrdersProps> = () => {
     renderedOrders = (
       <Box sx={{ textAlign: 'center' }}>
         <Typography variant='body1' fontWeight='500'>
-          No Ongoing Orders
+          No orders
         </Typography>
       </Box>
     )
@@ -419,6 +216,24 @@ export const VendorOngoingOrders: React.FC<IVendorOngoingOrdersProps> = () => {
           isOpen={isContactDialogOpenForCustomer}
         />
       )}
+      <MarkOrderAsOngoingDialog
+        isOpen={isOngoingModalOpen}
+        handleConfirm={() => {
+          setIsOngoingModalOpen(false)
+          dispatch(markOrderAsOngoing())
+        }}
+        handleClose={() => {
+          setIsOngoingModalOpen(false)
+        }}
+      />
+      <CompleteDialog
+        isOpen={isCompleteModalOpen}
+        handleConfirm={() => {
+          dispatch(completeOrder())
+          setIsCompleteModalOpen(false)
+        }}
+        handleClose={() => setIsCompleteModalOpen(false)}
+      />
       <CancellationDialog
         isOpen={isCancelModalOpen}
         handleConfirm={() => {

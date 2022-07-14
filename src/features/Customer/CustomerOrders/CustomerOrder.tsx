@@ -52,19 +52,25 @@ const CustomerOrder: React.FC = () => {
   }
   return (
     <>
-      <PageHeading heading='Your Orders' subHeading='Details of your orders' />
+      <PageHeading
+        heading='Your Flights'
+        subHeading='Manage all your flights'
+      />
       <Box sx={styles.container}>
         <Box sx={{ width: '100%', typography: 'body1' }}>
           <TabContext value={value}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
               <TabList onChange={handleChange} aria-label='Orders Tab'>
-                <Tab label='Ongoing' value={ORDER_STATUS.ONGOING.toString()} />
                 <Tab
-                  label='Completed'
+                  label='Upcoming Flights'
+                  value={ORDER_STATUS.ONGOING.toString()}
+                />
+                <Tab
+                  label='Completed Flights'
                   value={ORDER_STATUS.COMPLETED.toString()}
                 />
                 <Tab
-                  label='Cancelled'
+                  label='Cancelled Flights'
                   value={ORDER_STATUS.CANCELLED.toString()}
                 />
               </TabList>

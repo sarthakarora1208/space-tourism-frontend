@@ -65,9 +65,7 @@ export const BookSpaceServiceForm: React.FC<
   )
 
   const [country, setCountry] = React.useState(
-    customer && customer.country
-      ? customer.country
-      : spaceService!.rates[0].country
+    customer && customer.country ? customer.country : ''
   )
 
   const handleSelectChange = (event: SelectChangeEvent) => {
@@ -116,6 +114,7 @@ export const BookSpaceServiceForm: React.FC<
               labelId='charge-select-label'
               id='charge-select'
               placeholder='Select a rate'
+              defaultValue={country}
               value={country}
               onChange={handleSelectChange}
             >
@@ -287,7 +286,7 @@ export const BookSpaceServiceForm: React.FC<
               variant='contained'
               color='success'
               type='submit'
-              disabled={loading}
+              disabled={loading || country === ''}
               startIcon={<RocketLaunchIcon />}
             >
               Confirm Order

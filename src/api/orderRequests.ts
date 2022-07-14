@@ -81,17 +81,42 @@ export async function completeOrder(orderId: string) {
       `${ORDER_ROUTE}/${orderId}/complete`
     )
     return res.data.data
-    console.log(res.data.data)
   } catch (err) {
     throw err
   }
 }
 
-export async function createOrder() {
+export async function createOrder(
+  amount: number,
+  currency: string,
+  serviceName: string,
+  startTime: Date,
+  endTime: Date,
+  serviceId: string,
+  userId: string
+) {
   try {
-    const res = await API.post<{ data: string; success: boolean }>(
+    const res = await API.post<{ data: Order; success: boolean }>(
       `${ORDER_ROUTE}`,
-      {}
+      {
+        amount,
+        currency,
+        serviceName,
+        startTime,
+        endTime,
+        serviceId,
+        userId,
+      }
+    )
+    return res.data.data
+  } catch (err) {
+    throw err
+  }
+}
+export async function markOrderAsOngoing(id: string) {
+  try {
+    const res = await API.post<{ data: Order; success: boolean }>(
+      `${ORDER_ROUTE}/${id}/ongoing`
     )
     return res.data.data
   } catch (err) {

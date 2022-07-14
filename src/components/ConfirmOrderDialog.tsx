@@ -10,6 +10,7 @@ import React from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { simulateBankTransfer } from '../slices/businessSlice'
+import { createOrder } from '../slices/orderSlice'
 import Dialog from './Dialog/Dialog'
 
 interface IConfirmOrderDialogProps {
@@ -41,29 +42,30 @@ export const ConfirmOrderDialog: React.FC<IConfirmOrderDialogProps> = ({
         justifyContent='center'
         alignItems='start'
       >
-        <Grid
-          item
-          sx={{
-            width: '100%',
-          }}
-        ></Grid>
-        <Grid
-          item
-          mt={2}
-          sx={{
-            width: '100%',
-          }}
-        ></Grid>
+        <Typography component='legend' variant='body2' fontWeight='500'>
+          Are you sure you want to book this service?
+        </Typography>
       </Grid>
-      <FormControl sx={{ marginY: 2, float: 'right' }}>
+      <FormControl sx={{ marginY: 2, float: 'right', flexDirection: 'row' }}>
         <Button
           variant='text'
           color='success'
           onClick={() => {
+            dispatch(createOrder())
             dispatch(simulateBankTransfer(navigate))
+            handleClose()
           }}
         >
           Confirm
+        </Button>
+        <Button
+          variant='text'
+          color='error'
+          onClick={() => {
+            handleClose()
+          }}
+        >
+          Cancel
         </Button>
       </FormControl>
     </Dialog>

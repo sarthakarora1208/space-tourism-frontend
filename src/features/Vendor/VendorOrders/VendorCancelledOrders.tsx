@@ -18,32 +18,52 @@ import {
   CardHeader,
 } from '@mui/material'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
+import { FcCancel, FcCheckmark } from 'react-icons/fc'
+import { format, getHours } from 'date-fns'
 import {
   KeyboardArrowDown,
   KeyboardArrowUp,
   Info as InfoIcon,
 } from '@mui/icons-material'
-import { format, getHours } from 'date-fns'
-import theme from '../../../app/theme'
+
 import { RootState } from '../../../app/rootReducer'
-import collapsibleStyles from '../../../assets/jss/components/TableStyles/collapsibleStyles'
-import Status from '../../../components/OrderTable/Status'
-import { ORDER_STATUS } from '../../../constants/orderStatus'
+import theme from '../../../app/theme'
 import tableStyles from '../../../assets/jss/components/TableStyles/tableStyles'
-import { setOrder } from '../../../slices/orderSlice'
-import { VendorDetailDialogMobile } from '../../../components/OrderTable/VendorDetailDialogMobile'
 import {
+  ACTION,
   DATE,
   PRICE,
   SERVICE_NAME,
   STATUS,
   TIMING,
-  VENDOR,
 } from '../../../constants/table'
+import { CUSTOMER, VENDOR } from '../../../constants/userRoles'
 import { StyledTableRow } from '../../../components/StyledTableRow'
-//import { IContactModelForVendor } from '../../Customer/CustomerOrders/CustomerOngoingOrders'
+import { ORDER_STATUS } from '../../../constants/orderStatus'
+
+import { Business } from '../../../constants/models/Business'
+
+import Status from '../../../components/OrderTable/Status'
+
+import {
+  completeOrder,
+  markOrderAsOngoing,
+  setOrder,
+} from '../../../slices/orderSlice'
+import collapsibleStyles from '../../../assets/jss/components/TableStyles/collapsibleStyles'
+import { VendorDetailDialogMobile } from '../../../components/OrderTable/VendorDetailDialogMobile'
+import { User } from '../../../constants/models/User'
+
+import { CustomerDetailDialogMobile } from '../../../components/OrderTable/CustomerDetailDialogMobile'
+import { CancellationDialog } from '../../../components/OrderTable/CancelForm/CancellationDialog'
+import { CustomerDetailDialog } from '../../../components/OrderTable/CustomerDetailDialog'
+import { MarkOrderAsOngoingDialog } from '../../../components/MarkOrderAsOngoingDialog'
 
 interface IVendorCancelledOrdersProps {}
+
+interface IContactModelForCustomer {
+  user: User
+}
 
 export const VendorCancelledOrders: React.FC<
   IVendorCancelledOrdersProps
@@ -53,20 +73,27 @@ export const VendorCancelledOrders: React.FC<
     shallowEqual
   )
   const dispatch = useDispatch()
+  const matches = useMediaQuery(theme.breakpoints.up('md'))
+
   useEffect(() => {}, [cancelledOrders.length])
 
-  const matches = useMediaQuery(theme.breakpoints.up('md'))
-  const [isContactDialogOpenForVendor, setIsContactDialogOpenForVendor] =
+  const [contactModalDetailsCustomer, setContactModalDetailsForCustomer] =
+    useState<IContactModelForCustomer>()
+
+  const [isContactDialogOpenForCustomer, setIsContactDialogOpenForCustomer] =
     useState(false)
   const [
-    isContactDialogOpenForVendorMobile,
-    setIsContactDialogOpenForVendorMobile,
+    isContactDialogOpenForCustomerMobile,
+    setIsContactDialogOpenForCustomerMobile,
   ] = useState(false)
-  const [contactModalDetailsVendor, setContactModalDetailsForVendor] =
-    useState<any>()
+  const [isCancelModalOpen, setIsCancelModalOpen] = useState(false)
+
+  const [isOngoingModalOpen, setIsOngoingModalOpen] = useState(false)
+
   const [open, setOpen] = useState(false)
 
   let renderedOrders
+
   if (cancelledOrders.length > 0) {
     if (!matches) {
       renderedOrders = (
@@ -79,6 +106,7 @@ export const VendorCancelledOrders: React.FC<
               startTime,
               endTime,
               amount,
+              currency,
               status,
               user,
               business,
@@ -108,7 +136,7 @@ export const VendorCancelledOrders: React.FC<
                         }}
                       >
                         <Typography variant='body1' fontWeight='500'>
-                          {serviceName}
+                          <Typography variant='body2'>{user?.name}</Typography>
                         </Typography>
                       </Box>
                     </Stack>
@@ -131,7 +159,7 @@ export const VendorCancelledOrders: React.FC<
                     <Typography variant='body2' fontWeight='500'>
                       Status
                     </Typography>
-                    <Status status={ORDER_STATUS[status]} />
+                    <Status status={'Pending Approval'} />
                   </Stack>
                   <Stack
                     direction='row'
@@ -170,30 +198,25 @@ export const VendorCancelledOrders: React.FC<
                       spacing={2}
                       justifyContent='space-between'
                     >
-                      <>
-                        <Typography variant='body2' fontWeight='500'>
-                          Customer Info
-                        </Typography>
-                        <Stack direction='row' spacing={1}>
-                          <Button
-                            onClick={() => {
-                              setIsContactDialogOpenForVendor(true)
-                              setContactModalDetailsForVendor({
-                                service,
-                                business,
-                              })
-                            }}
-                            size='small'
-                            variant='text'
-                            sx={tableStyles.infoIcon}
-                            endIcon={<InfoIcon />}
-                          >
-                            <Typography variant='body2'>
-                              {user?.name}
-                            </Typography>
-                          </Button>
-                        </Stack>
-                      </>
+                      <Typography variant='body2' fontWeight='500'>
+                        Customer Info
+                      </Typography>
+                      <Stack direction='row' spacing={1}>
+                        <Button
+                          onClick={() => {
+                            setIsContactDialogOpenForCustomer(true)
+                            setContactModalDetailsForCustomer({
+                              user,
+                            })
+                          }}
+                          size='small'
+                          variant='text'
+                          sx={tableStyles.infoIcon}
+                          endIcon={<InfoIcon />}
+                        >
+                          <Typography variant='body2'>{serviceName}</Typography>
+                        </Button>
+                      </Stack>
                     </Stack>
 
                     <Stack
@@ -206,20 +229,18 @@ export const VendorCancelledOrders: React.FC<
                         Price
                       </Typography>
                       <Typography variant='body2'>
-                        ${amount.toFixed(2)}
+                        {amount} {currency}
                       </Typography>
                     </Stack>
                   </Stack>
                 </Collapse>
-
-                {contactModalDetailsVendor !== undefined && (
-                  <VendorDetailDialogMobile
-                    service={contactModalDetailsVendor!.service}
-                    business={contactModalDetailsVendor!.business}
+                {contactModalDetailsCustomer !== undefined && (
+                  <CustomerDetailDialogMobile
+                    user={contactModalDetailsCustomer!.user}
                     handleClose={() => {
-                      setIsContactDialogOpenForVendorMobile(false)
+                      setIsContactDialogOpenForCustomer(false)
                     }}
-                    isOpen={isContactDialogOpenForVendorMobile}
+                    isOpen={isContactDialogOpenForCustomer}
                   />
                 )}
               </Card>
@@ -233,13 +254,17 @@ export const VendorCancelledOrders: React.FC<
           <Table stickyHeader aria-label='simple table'>
             <TableHead sx={tableStyles.tableHead}>
               <TableCell sx={tableStyles.tableCellForHead}>
-                {SERVICE_NAME}
+                Customer Name
               </TableCell>
-              <TableCell sx={tableStyles.tableCellForHead}>{VENDOR}</TableCell>
-              <TableCell sx={tableStyles.tableCellForHead}>{DATE}</TableCell>
-              <TableCell sx={tableStyles.tableCellForHead}>{TIMING}</TableCell>
-              <TableCell sx={tableStyles.tableCellForHead}>{PRICE}</TableCell>
-              <TableCell sx={tableStyles.tableCellForHead}>{STATUS}</TableCell>
+              <TableCell sx={tableStyles.tableCellForHead}>
+                Flight name
+              </TableCell>
+              <TableCell sx={tableStyles.tableCellForHead}>
+                Time of booking
+              </TableCell>
+
+              <TableCell sx={tableStyles.tableCellForHead}>Amount</TableCell>
+              <TableCell sx={tableStyles.tableCellForHead}>Status</TableCell>
             </TableHead>
             <TableBody>
               {cancelledOrders.map((order) => {
@@ -247,6 +272,7 @@ export const VendorCancelledOrders: React.FC<
                   id,
                   createdAt,
                   serviceName,
+                  currency,
                   startTime,
                   endTime,
                   amount,
@@ -256,56 +282,39 @@ export const VendorCancelledOrders: React.FC<
                   spaceService,
                 } = order
                 const service = spaceService
-
                 return (
                   <StyledTableRow key={id}>
                     <TableCell sx={tableStyles.tableCellForBody}>
-                      <CardHeader
-                        avatar={
-                          <Avatar alt={service.name} src={service.imageUrl} />
-                        }
-                        title={service.name}
-                      />
-                    </TableCell>
-                    <TableCell sx={tableStyles.tableCellForBody}>
                       <Typography variant='body2'>
-                        <>
-                          {business?.businessName}
-                          {status === ORDER_STATUS.ONGOING && (
-                            <IconButton
-                              size='small'
-                              onClick={() => {
-                                setIsContactDialogOpenForVendor(true)
-                                setContactModalDetailsForVendor({
-                                  service,
-                                  business,
-                                })
-                              }}
-                            >
-                              <InfoIcon
-                                sx={tableStyles.infoIcon}
-                                fontSize='small'
-                              />
-                            </IconButton>
-                          )}
-                        </>
+                        {user?.name}
+                        <IconButton
+                          size='small'
+                          onClick={() => {
+                            setIsContactDialogOpenForCustomer(true)
+                            setContactModalDetailsForCustomer({
+                              user,
+                            })
+                          }}
+                        >
+                          <InfoIcon
+                            sx={tableStyles.infoIcon}
+                            fontSize='small'
+                          />
+                        </IconButton>
                       </Typography>
                     </TableCell>
                     <TableCell sx={tableStyles.tableCellForBody}>
-                      <Typography variant='body2'>
-                        {format(new Date(endTime), 'eeee, dd MMM yyyy')}
-                      </Typography>
+                      <Typography variant='body2'>{service.name}</Typography>
                     </TableCell>
                     <TableCell sx={tableStyles.tableCellForBody}>
                       <Typography variant='body2'>
-                        {format(new Date(startTime), 'kk:mm')} -{' '}
-                        {format(new Date(endTime), 'kk:mm')}
+                        {format(new Date(createdAt), 'hh:mm a, dd MMMM yyyy ')}
                       </Typography>
+                    </TableCell>
+                    <TableCell sx={tableStyles.tableCellForBody}>
+                      {amount} {currency}
                     </TableCell>
 
-                    <TableCell sx={tableStyles.tableCellForBody}>
-                      $ {amount.toFixed(2)}
-                    </TableCell>
                     <TableCell sx={tableStyles.tableCellForBody}>
                       <Status status={ORDER_STATUS[status]} />
                     </TableCell>
@@ -321,7 +330,7 @@ export const VendorCancelledOrders: React.FC<
     renderedOrders = (
       <Box sx={{ textAlign: 'center' }}>
         <Typography variant='body1' fontWeight='500'>
-          No cancelled orders
+          No bookings yet
         </Typography>
       </Box>
     )
@@ -337,11 +346,40 @@ export const VendorCancelledOrders: React.FC<
     renderedOrders = (
       <Box sx={{ textAlign: 'center' }}>
         <Typography variant='body1' fontWeight='500'>
-          No cancelled orders
+          No orders
         </Typography>
       </Box>
     )
   }
-
-  return <div>{renderedOrders}</div>
+  return (
+    <div>
+      {renderedOrders}
+      {contactModalDetailsCustomer !== undefined && (
+        <CustomerDetailDialog
+          user={contactModalDetailsCustomer!.user}
+          handleClose={() => {
+            setIsContactDialogOpenForCustomer(false)
+          }}
+          isOpen={isContactDialogOpenForCustomer}
+        />
+      )}
+      <MarkOrderAsOngoingDialog
+        isOpen={isOngoingModalOpen}
+        handleConfirm={() => {
+          setIsOngoingModalOpen(false)
+          dispatch(markOrderAsOngoing())
+        }}
+        handleClose={() => {
+          setIsOngoingModalOpen(false)
+        }}
+      />
+      <CancellationDialog
+        isOpen={isCancelModalOpen}
+        handleConfirm={() => {
+          setIsCancelModalOpen(false)
+        }}
+        handleClose={() => setIsCancelModalOpen(false)}
+      />
+    </div>
+  )
 }

@@ -18,11 +18,13 @@ export interface orderState {
   error: string | null
   order: Order | null
   orders: Order[]
+  initOrders: Order[]
   completedOrders: Order[]
   cancelledOrders: Order[]
   ongoingOrders: Order[]
   duration: number
   amount: number
+  tabIndex: string
 }
 
 export const initialState: orderState = {
@@ -30,11 +32,13 @@ export const initialState: orderState = {
   error: null,
   order: null,
   orders: [],
+  initOrders: [],
   completedOrders: [],
   cancelledOrders: [],
   ongoingOrders: [],
   duration: 0,
   amount: 0,
+  tabIndex: ORDER_STATUS.INIT.toString(),
 }
 
 const orderSlice = createSlice({
@@ -51,6 +55,9 @@ const orderSlice = createSlice({
     setOrders(state, action: PayloadAction<Order[]>) {
       state.orders = action.payload
     },
+    setInitOrders(state, action: PayloadAction<Order[]>) {
+      state.initOrders = action.payload
+    },
     setCompletedOrders(state, action: PayloadAction<Order[]>) {
       state.completedOrders = action.payload
     },
@@ -64,7 +71,9 @@ const orderSlice = createSlice({
     setAmount(state, action: PayloadAction<number>) {
       state.amount = action.payload
     },
-
+    setTabIndex(state, action: PayloadAction<string>) {
+      state.tabIndex = action.payload
+    },
     orderFailure(state, action: PayloadAction<string>) {
       state.loading = false
       state.error = action.payload ? action.payload : 'There is some error'
@@ -79,8 +88,10 @@ export const {
   orderStart,
   setOrder,
   orderComplete,
+  setTabIndex,
   orderFailure,
   setOrders,
+  setInitOrders,
   setCompletedOrders,
   setOngoingOrders,
   setCancelledOrders,
@@ -102,63 +113,6 @@ export const getOrderById =
       console.log(err)
     }
   }
-export const getOrders = (): AppThunk => async (dispatch, getState) => {
-  try {
-    const store = getState()
-    const { role, userId } = store.auth
-    const { businessId } = store.vendor
-
-    console.log(role)
-    console.log(userId)
-    console.log(businessId)
-    if (role === USER_ROLE.CUSTOMER) {
-      dispatch(orderStart())
-      const completedOrders = await REQUESTS.getOrdersForCustomer(
-        userId,
-        ORDER_STATUS.COMPLETED
-      )
-      console.log('completedOrders', completedOrders)
-      const ongoingOrders = await REQUESTS.getOrdersForCustomer(
-        userId,
-        ORDER_STATUS.ONGOING
-      )
-      console.log('ongoingOrders', ongoingOrders)
-      const cancelledOrders = await REQUESTS.getOrdersForCustomer(
-        userId,
-        ORDER_STATUS.CANCELLED
-      )
-      console.log('cancelledOrders', cancelledOrders)
-      dispatch(setOngoingOrders(ongoingOrders))
-      dispatch(setCompletedOrders(completedOrders))
-      dispatch(setCancelledOrders(cancelledOrders))
-      dispatch(orderComplete())
-    } else if (role === USER_ROLE.VENDOR) {
-      dispatch(orderStart())
-      const completedOrders = await REQUESTS.getOrdersForBusiness(
-        businessId,
-        ORDER_STATUS.COMPLETED
-      )
-      console.log(completedOrders)
-      const ongoingOrders = await REQUESTS.getOrdersForBusiness(
-        businessId,
-        ORDER_STATUS.ONGOING
-      )
-      const cancelledOrders = await REQUESTS.getOrdersForBusiness(
-        businessId,
-        ORDER_STATUS.CANCELLED
-      )
-      dispatch(setOngoingOrders(ongoingOrders))
-      dispatch(setCompletedOrders(completedOrders))
-      dispatch(setCancelledOrders(cancelledOrders))
-      dispatch(orderComplete())
-    }
-  } catch (err: any) {
-    // const { error } = err.response.data;
-    // dispatch(orderFailure(error));
-    // dispatch(setErrorMsg(error));
-    console.log(err)
-  }
-}
 
 export const getCompletedOrdersForVendor =
   (): AppThunk => async (dispatch, getState) => {
@@ -172,6 +126,27 @@ export const getCompletedOrdersForVendor =
         ORDER_STATUS.COMPLETED
       )
       dispatch(setCompletedOrders(completedOrders))
+      dispatch(orderComplete())
+    } catch (err: any) {
+      const { error } = err.response.data
+      dispatch(orderFailure(error))
+      dispatch(setErrorMsg(error))
+      console.log(err)
+    }
+  }
+
+export const getInitOrdersForVendor =
+  (): AppThunk => async (dispatch, getState) => {
+    try {
+      const store = getState()
+      const { businessId } = store.vendor
+
+      dispatch(orderStart())
+      const initOrders = await REQUESTS.getOrdersForBusiness(
+        businessId,
+        ORDER_STATUS.INIT
+      )
+      dispatch(setInitOrders(initOrders))
       dispatch(orderComplete())
     } catch (err: any) {
       const { error } = err.response.data
@@ -313,7 +288,7 @@ export const cancelOrder =
         dispatch(getCancelledOrdersForVendor())
       }
 
-      dispatch(setSuccessMsg('Order cancelled successfully'))
+      dispatch(setSuccessMsg('Flight cancelled successfully!'))
       dispatch(orderComplete())
     } catch (err: any) {
       const { error } = err.response.data
@@ -367,50 +342,16 @@ export const addReply =
     }
   }
 
-export const createBabySitterOrder =
-  (
-    startTime: Date,
-    endTime: Date,
-    childrenIds: string[],
-    navigate: NavigateFunction
-  ): AppThunk =>
-  async (dispatch, getState) => {
-    try {
-      dispatch(orderStart())
-      const store = getState()
-
-      const customerId = store.auth.userId
-      const customer = store.customer.customer
-
-      const amount = store.order.amount
-
-      // const vendor = store.business.business!.users[0];
-
-      const url = await REQUESTS.createOrder()
-      dispatch(orderComplete())
-      window.location.replace(url)
-      //dispatch(setOrder(order));
-      //dispatch(getOngoingOrdersForCustomer());
-      //navigate(CUSTOMER_ORDERS);
-      //dispatch(setSuccessMsg("Order placed successfully"));
-    } catch (err: any) {
-      const { error } = err.response.data
-      dispatch(orderFailure(error))
-      dispatch(setErrorMsg(error))
-      console.log(err)
-    }
-  }
 export const completeOrder = (): AppThunk => async (dispatch) => {
   try {
     dispatch(orderStart())
     const orderId = store.getState().order.order?.id
-    const chatRoomId = store.getState().order.order?.chatRoomId
     const completedOrder = await REQUESTS.completeOrder(orderId!)
-    console.log('completedOrder', orderId)
-    dispatch(getCompletedOrdersForCustomer())
-    dispatch(getOngoingOrdersForCustomer())
+    dispatch(getCompletedOrdersForVendor())
+    dispatch(getOngoingOrdersForVendor())
+    dispatch(setTabIndex(ORDER_STATUS.COMPLETED.toString()))
     dispatch(setOrder(null))
-    dispatch(setSuccessMsg('Marked order as complete!'))
+    dispatch(setSuccessMsg('Marked flight as complete!'))
     dispatch(orderComplete())
   } catch (err: any) {
     const { error } = err.response.data
@@ -418,3 +359,54 @@ export const completeOrder = (): AppThunk => async (dispatch) => {
     dispatch(setErrorMsg(error))
   }
 }
+
+export const createOrder = (): AppThunk => async (dispatch, getState) => {
+  try {
+    dispatch(orderStart())
+    const store = getState()
+    let userId = store.customer.customer!.id
+    let amount = store.business.amount
+    let currency = store.business.currency
+    let serviceId = store.spaceService.spaceService!.id
+    let serviceName = store.spaceService.spaceService!.name
+    let startTime = store.spaceService.spaceService!.startTime
+    let endTime = store.spaceService.spaceService!.endTime
+
+    const order = await REQUESTS.createOrder(
+      amount,
+      currency,
+      serviceName,
+      startTime,
+      endTime,
+      serviceId,
+      userId
+    )
+    dispatch(setOrder(order))
+    dispatch(orderComplete())
+  } catch (err: any) {
+    const { error } = err.response.data
+    dispatch(orderFailure(error))
+    dispatch(setErrorMsg(error))
+  }
+}
+
+export const markOrderAsOngoing =
+  (): AppThunk => async (dispatch, getState) => {
+    try {
+      dispatch(orderStart())
+      const store = getState()
+      let orderId = store.order.order!.id
+
+      const order = await REQUESTS.markOrderAsOngoing(orderId)
+      dispatch(setOrder(order))
+      dispatch(getInitOrdersForVendor())
+      dispatch(getOngoingOrdersForVendor())
+      dispatch(setTabIndex(ORDER_STATUS.ONGOING.toString()))
+      dispatch(setSuccessMsg('Ticket confirmed'))
+      dispatch(orderComplete())
+    } catch (err: any) {
+      const { error } = err.response.data
+      dispatch(orderFailure(error))
+      dispatch(setErrorMsg(error))
+    }
+  }

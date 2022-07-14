@@ -25,49 +25,69 @@ import styles from '../../../assets/jss/pages/Vendor/VendorOrderStyles'
 import {
   getCancelledOrdersForVendor,
   getCompletedOrdersForVendor,
+  getInitOrdersForVendor,
   getOngoingOrdersForVendor,
+  setTabIndex,
 } from '../../../slices/orderSlice'
 
 import { ORDER_STATUS } from '../../../constants/orderStatus'
 import { VendorOngoingOrders } from './VendorOngoingOrders'
 import { VendorCompletedOrders } from './VendorCompletedOrders'
 import { VendorCancelledOrders } from './VendorCancelledOrders'
+import { VendorInitOrders } from './VendorInitOrders'
 
 const VendorOrders: React.FC = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
+    dispatch(getInitOrdersForVendor())
     dispatch(getOngoingOrdersForVendor())
     dispatch(getCompletedOrdersForVendor())
     dispatch(getCancelledOrdersForVendor())
     return () => {}
   }, [])
 
-  const [value, setValue] = useState('1')
+  const { tabIndex } = useSelector(
+    (state: RootState) => state.order,
+    shallowEqual
+  )
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
-    setValue(newValue)
+    dispatch(setTabIndex(newValue))
   }
 
   return (
     <>
-      <PageHeading heading='Orders' subHeading='View your order history!' />
+      <PageHeading
+        heading='Flight Bookings'
+        subHeading='View your flight bookings'
+      />
       <Box sx={styles.container}>
         <Box sx={{ width: '100%', typography: 'body1' }}>
-          <TabContext value={value}>
+          <TabContext value={tabIndex}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
               <TabList onChange={handleChange} aria-label='Orders Tab'>
-                <Tab label='Ongoing' value={ORDER_STATUS.ONGOING.toString()} />
                 <Tab
-                  label='Completed'
+                  label='Pending Approval'
+                  value={ORDER_STATUS.INIT.toString()}
+                />
+                <Tab
+                  label='Approved Bookings'
+                  value={ORDER_STATUS.ONGOING.toString()}
+                />
+                <Tab
+                  label='Completed Flights'
                   value={ORDER_STATUS.COMPLETED.toString()}
                 />
                 <Tab
-                  label='Cancelled'
+                  label='Cancelled Bookings'
                   value={ORDER_STATUS.CANCELLED.toString()}
                 />
               </TabList>
             </Box>
+            <TabPanel value={ORDER_STATUS.INIT.toString()} sx={{ paddingX: 0 }}>
+              <VendorInitOrders />
+            </TabPanel>
             <TabPanel
               value={ORDER_STATUS.ONGOING.toString()}
               sx={{ paddingX: 0 }}

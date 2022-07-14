@@ -67,7 +67,7 @@ const App: React.FC<IAppProps> = ({}) => {
                   <Route element={<VendorRoute />}>
                     <Route
                       path={ROUTES.VENDOR_DASHBOARD}
-                      element={<VendorDashboard />}
+                      element={<VendorServices />}
                     />
                     <Route
                       path={ROUTES.VENDOR_SERVICES}

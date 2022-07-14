@@ -51,7 +51,7 @@ export const VendorDetailDialog: React.FC<IVendorProps> = ({
           <Box>
             <Stack direction='row' spacing={1} alignItems='center'>
               <Typography variant='body2'>
-                <b>Name: &nbsp;</b> {service?.name}
+                <b>Name: &nbsp;</b> {business?.businessName}
               </Typography>
             </Stack>
             <Stack direction='row' spacing={1} alignItems='baseline'>

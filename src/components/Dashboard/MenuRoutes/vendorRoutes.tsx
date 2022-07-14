@@ -19,7 +19,7 @@ export const vendorRoutes = [
 
     children: [
       {
-        id: 'Orders',
+        id: 'Flight Bookings',
         route: VENDOR_ORDERS,
         icon: <IoBagCheckOutline fontSize={24} />,
       },

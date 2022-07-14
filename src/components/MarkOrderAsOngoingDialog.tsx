@@ -10,26 +10,24 @@ import {
   Rating,
   Typography,
 } from '@mui/material'
-import Dialog from '../Dialog/Dialog'
+import Dialog from './Dialog/Dialog'
 
-interface ICompleteDialogProps {
+interface IMarkOrderAsOngoingDialogProps {
   handleConfirm: any
   handleClose: any
   isOpen: boolean
 }
 
-export const CompleteDialog: React.FC<ICompleteDialogProps> = ({
-  handleConfirm,
-  handleClose,
-  isOpen,
-}) => {
+export const MarkOrderAsOngoingDialog: React.FC<
+  IMarkOrderAsOngoingDialogProps
+> = ({ handleConfirm, handleClose, isOpen }) => {
   return (
     <Dialog
       open={isOpen}
       handleClose={handleClose}
       aria-labelledby='modal-modal-title'
       aria-describedby='modal-modal-description'
-      title='Mark as complete'
+      title=''
       action={
         <>
           <Button variant='text' onClick={handleClose}>
@@ -42,7 +40,7 @@ export const CompleteDialog: React.FC<ICompleteDialogProps> = ({
       }
     >
       <Typography variant='body2' mb={2}>
-        Are you sure you want to mark the flight as complete?
+        Are you sure you want to confirm this ticket?
       </Typography>
     </Dialog>
   )

@@ -32,6 +32,7 @@ const Login: React.FC<ILoginProps> = () => {
   let renderedForm
 
   const customer = false
+
   const defaultOptions = {
     loop: true,
     autoplay: true,
