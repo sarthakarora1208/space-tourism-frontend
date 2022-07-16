@@ -128,6 +128,7 @@ const SpaceServiceCard: React.FC<ISpaceServiceCardProps> = ({
                 labelId='charge-select-label'
                 id='charge-select'
                 placeholder='Select a rate'
+                defaultValue={`${rates[0].amount} ${rates[0].currency}`}
               >
                 {rates.map((rate: Rate, index: number) => {
                   if (rate.amount > 0) {
@@ -135,7 +136,7 @@ const SpaceServiceCard: React.FC<ISpaceServiceCardProps> = ({
                       <MenuItem
                         key={uuidv4()}
                         sx={styles.chargeItem}
-                        value={rate.amount}
+                        value={`${rate.amount} ${rate.currency}`}
                       >
                         {rate.amount} {rate.currency}
                       </MenuItem>

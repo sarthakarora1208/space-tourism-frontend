@@ -39,7 +39,7 @@ const ViewVirtualAccountTransactions: React.FC<
     <>
       <PageHeading
         heading={'Bank Account Transactions'}
-        subHeading={bankAccount?.country}
+        subHeading={bankAccount?.beneficiary_name}
       >
         <Box sx={{ paddingLeft: '1rem' }}>
           <Typography variant='body2' my={2}>
@@ -52,7 +52,11 @@ const ViewVirtualAccountTransactions: React.FC<
           </Typography>
           <Typography variant='body2' my={2}>
             <strong>Account Number </strong> &nbsp;
-            <em>{bankAccount?.account_number}</em>
+            <em>
+              {bankAccount?.account_number
+                ? bankAccount.account_number
+                : bankAccount!.iban}
+            </em>
           </Typography>
           <Typography variant='body2' my={2}>
             <strong>Country ISO</strong> &nbsp;

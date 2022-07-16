@@ -50,6 +50,8 @@ import {
   getCustomerById,
   uploadCustomerProfileImage,
 } from '../../../slices/customerSlice'
+import { UploadImage } from '../../../components/UploadImage'
+import { CustomerOngoingOrders } from '../CustomerOrders/CustomerOngoingOrders'
 // mock data
 
 interface ICustomerProfile {}
@@ -121,27 +123,8 @@ const CustomerProfile: React.FC<ICustomerProfile> = () => {
                   <AddAPhotoIcon />
                 </Button>
               </Typography>
-              <DropzoneDialog
-                acceptedFiles={['image/*']}
-                cancelButtonText='Cancel'
-                submitButtonText='Submit'
-                maxFileSize={10240000}
-                filesLimit={1}
-                open={open}
-                onClose={() => setOpen(false)}
-                onSave={(files) => {
-                  if (files.length > 0) {
-                    const file = files[0]
-                    const formData = new FormData()
-                    formData.append('file', file)
-                    //    dispatch(uploadVendorProfileImageUrl(formData, navigate));
-                    dispatch(uploadCustomerProfileImage(formData, navigate))
-                  }
-                  setOpen(false)
-                }}
-                showPreviews
-                showFileNamesInPreview
-              />
+              <UploadImage isOpen={open} handleClose={() => setOpen(false)} />
+
               <CustomerDetailFields
                 fieldName={CUSTOMER_NAME}
                 value={customer ? customer!.name : 'name'}
@@ -176,6 +159,7 @@ const CustomerProfile: React.FC<ICustomerProfile> = () => {
           </Card>
 
           <Box sx={styles.detailContainer}>
+            <CustomerOngoingOrders />
             {/* <Card sx={styles.cardStyle}>
               <CardContent>
                 <Typography gutterBottom variant="h6" component="h6">

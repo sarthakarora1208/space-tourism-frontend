@@ -1,6 +1,10 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Grid, Container, CssBaseline, Box } from '@mui/material'
+import FormGroup from '@mui/material/FormGroup'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import Switch from '@mui/material/Switch'
+
 import { shallowEqual, useSelector } from 'react-redux'
 
 import { RootState } from '../../../app/rootReducer'
@@ -31,7 +35,17 @@ const Login: React.FC<ILoginProps> = () => {
 
   let renderedForm
 
-  const customer = false
+  const [isCustomer, setIsCustomer] = useState<boolean>(true)
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setIsCustomer(event.target.checked)
+  }
+
+  useEffect(() => {
+    if (step === 1 && !email && !tempPassword) {
+      navigate(LOGIN)
+    }
+  }, [isCustomer])
 
   const defaultOptions = {
     loop: true,
@@ -47,8 +61,8 @@ const Login: React.FC<ILoginProps> = () => {
       renderedForm = <EnhancedLoginForm navigate={navigate} />
       renderedForm = (
         <EnhancedLoginForm
-          email={customer ? 'dociye5646@lankew.com' : 'heforec361@leupus.com'}
-          password={customer ? '1234567' : '12345678'}
+          email={isCustomer ? 'paliha4007@lodores.com' : 'lenaxe9563@opude.com'}
+          password={isCustomer ? '12345678' : '12345678'}
           navigate={navigate}
         />
       )
@@ -66,12 +80,6 @@ const Login: React.FC<ILoginProps> = () => {
   //   if (isAuthenticated) {
   //   }
   // }, [isAuthenticated, role]);
-
-  useEffect(() => {
-    if (step === 1 && !email && !tempPassword) {
-      navigate(LOGIN)
-    }
-  }, [])
 
   return (
     <div style={{ paddingTop: '15vh', background: '#FFFFFF' }}>
@@ -96,6 +104,19 @@ const Login: React.FC<ILoginProps> = () => {
           </Grid>
           <Grid item xs={12} md={6}>
             <CssBaseline />
+            <FormGroup>
+              <FormControlLabel
+                control={
+                  <Switch
+                    defaultChecked
+                    value={isCustomer}
+                    onChange={handleChange}
+                  />
+                }
+                label='isCustomer'
+              />
+            </FormGroup>
+            <div>{JSON.stringify(isCustomer, null, 4)}</div>
             <div style={{ padding: '1em' }}>{renderedForm}</div>
           </Grid>
         </Grid>

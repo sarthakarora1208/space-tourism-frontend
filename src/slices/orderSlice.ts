@@ -299,18 +299,22 @@ export const cancelOrder =
   }
 
 export const addReview =
-  (star: number, review: string): AppThunk =>
+  (stars: number, content: string): AppThunk =>
   async (dispatch, getState) => {
     try {
       dispatch(orderStart())
       const store = getState()
       const orderId = store.order.order!.id
       const userId = store.order.order!.user.id
+      const serviceId = store.order.order!.spaceService.id
 
-      let serviceId: string = ''
-
-      //const data = await REQUESTS.addReview()
-      //console.log(data)
+      const data = await REQUESTS.addReview(
+        stars,
+        content,
+        orderId,
+        userId,
+        serviceId
+      )
       dispatch(setOrder(null))
       dispatch(getCompletedOrdersForCustomer())
       dispatch(setSuccessMsg('Review added successfully!'))

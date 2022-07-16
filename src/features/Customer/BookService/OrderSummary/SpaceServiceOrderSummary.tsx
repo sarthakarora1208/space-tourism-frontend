@@ -331,7 +331,7 @@ export const SpaceServiceOrderSummary: React.FC<
                   Service Fee:
                 </Typography>
                 <Typography variant='body1' fontWeight='600'>
-                  ${' '}
+                  {' '}
                 </Typography>
               </Grid>
               <Divider />

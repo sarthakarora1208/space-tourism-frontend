@@ -5,6 +5,7 @@ import {
   IoPersonCircleOutline,
   IoLayersOutline,
   IoAlbums,
+  IoAirplane,
 } from 'react-icons/io5'
 import {
   VENDOR_PROFILE,
@@ -19,6 +20,11 @@ export const vendorRoutes = [
 
     children: [
       {
+        id: 'Flights',
+        route: VENDOR_SERVICES,
+        icon: <IoAirplane fontSize={24} />,
+      },
+      {
         id: 'Flight Bookings',
         route: VENDOR_ORDERS,
         icon: <IoBagCheckOutline fontSize={24} />,
@@ -28,11 +34,7 @@ export const vendorRoutes = [
         route: VENDOR_VIRTUAL_ACCOUNTS,
         icon: <IoAlbums fontSize={24} />,
       },
-      {
-        id: 'Services Offered',
-        route: VENDOR_SERVICES,
-        icon: <IoLayersOutline fontSize={24} />,
-      },
+
       {
         id: 'Profile',
         route: VENDOR_PROFILE,

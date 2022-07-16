@@ -5,7 +5,7 @@ const styles = {
     flexDirection: 'column',
     gap: '0.5rem',
     position: 'relative',
-    minHeight: '500px',
+    minHeight: '400px',
     border: '1px solid #e0e0e0',
     boxShadow: '0px 5px 10px 5px #e0e0e0',
     '&:hover': {

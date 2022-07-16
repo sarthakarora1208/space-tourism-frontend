@@ -6,7 +6,7 @@ import { addReview } from '../../../slices/orderSlice'
 import { AppThunk } from '../../../app/store'
 
 interface IDispatchProps {
-  addReview: (star: number, review: string) => AppThunk
+  addReview: (stars: number, content: string) => AppThunk
 }
 
 export interface EnhancedAddReviewFormValues {
@@ -17,7 +17,7 @@ export interface EnhancedAddReviewFormProps {
   rating?: number
   reviewText?: string
   handleClose: () => void
-  addReview: (star: number, review: string) => void
+  addReview: (stars: number, content: string) => void
 }
 
 const EnhancedAddReviewForm = withFormik<
@@ -33,7 +33,6 @@ const EnhancedAddReviewForm = withFormik<
     reviewText: Yup.string().required('Required field'),
   }),
   handleSubmit: (values, { setSubmitting, props }) => {
-    console.log(`On submit of the form ${values.reviewText}`)
     const { addReview, handleClose } = props
     addReview(values.rating, values.reviewText)
 

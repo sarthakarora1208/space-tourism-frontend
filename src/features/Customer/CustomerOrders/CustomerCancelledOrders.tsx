@@ -190,7 +190,7 @@ export const CustomerCancelledOrders: React.FC<
     renderedOrders = (
       <Box sx={{ textAlign: 'center' }}>
         <Typography variant='body1' fontWeight='500'>
-          No cancelled orders
+          No cancelled flights
         </Typography>
       </Box>
     )

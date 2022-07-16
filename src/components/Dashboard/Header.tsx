@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Toolbar,
   IconButton,
@@ -59,12 +59,22 @@ export const Header: React.FC<IHeaderProps> = ({ handleDrawerOpen, open }) => {
 
   const slideIn = matches || !trigger
 
-  const { name, user } = useSelector((state: RootState) => {
+  const [imageUrl, setImageUrl] = useState<string>('')
+  const { name, user, vendor, customer } = useSelector((state: RootState) => {
     return {
       name: state.auth.name,
       user: state.auth.role,
+      vendor: state.vendor.vendor,
+      customer: state.customer.customer,
     }
   }, shallowEqual)
+  useEffect(() => {
+    if (vendor) {
+      setImageUrl(vendor.profileImageUrl)
+    } else if (customer) {
+      setImageUrl(customer.profileImageUrl)
+    }
+  }, [])
 
   return (
     <Slide in={slideIn}>
@@ -82,7 +92,7 @@ export const Header: React.FC<IHeaderProps> = ({ handleDrawerOpen, open }) => {
           <Box sx={styles.navLinks}>
             <IconButton
               sx={{
-                borderRadius: 1,
+                borderRadius: 2,
               }}
               id='basic-button'
               aria-controls={avatarMenuOpen ? 'basic-menu' : undefined}
@@ -98,7 +108,9 @@ export const Header: React.FC<IHeaderProps> = ({ handleDrawerOpen, open }) => {
               >
                 {name}
               </Typography>
-              <Avatar sx={styles.avatar}>{name[0]}</Avatar>
+              <Avatar sx={styles.avatar} src={imageUrl}>
+                {name[0]}
+              </Avatar>
             </IconButton>
 
             <Menu

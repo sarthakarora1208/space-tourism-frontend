@@ -3,6 +3,7 @@ import {
   IoBagCheckOutline,
   IoPersonCircleOutline,
   IoLayersOutline,
+  IoAirplane,
 } from 'react-icons/io5'
 import {
   CUSTOMER_ORDERS,
@@ -16,12 +17,12 @@ export const customerRoutes = [
 
     children: [
       {
-        id: 'Services',
+        id: 'Find Flights',
         route: CUSTOMER_SERVICES,
-        icon: <IoLayersOutline fontSize={24} />,
+        icon: <IoAirplane fontSize={24} />,
       },
       {
-        id: 'Orders',
+        id: 'Booked Flights',
         route: CUSTOMER_ORDERS,
         icon: <IoBagCheckOutline fontSize={24} />,
       },

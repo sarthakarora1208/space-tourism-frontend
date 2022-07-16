@@ -57,6 +57,8 @@ const VirtualAccounts: React.FC<IVirtualAccountsProps> = ({}) => {
           spacing={3}
           sx={{ margin: '0.5rem' }}
         >
+          {' '}
+          {bankAccounts.length === 0 && ' No bank accounts found!'}
           {bankAccounts.map((bankAccount) => (
             <Grid item md={4}>
               <Card

@@ -43,7 +43,7 @@ const CustomerOrder: React.FC = () => {
     return () => {}
   }, [])
 
-  const [value, setValue] = useState('1')
+  const [value, setValue] = useState('0')
 
   const matches = useMediaQuery(theme.breakpoints.up('md'))
 

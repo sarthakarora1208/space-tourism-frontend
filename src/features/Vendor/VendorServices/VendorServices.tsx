@@ -43,9 +43,9 @@ const VendorServices: React.FC = () => {
     renderedStatus = (
       <Box>
         <Typography>
-          No Service found
+          No flight found
           <Button variant='text'>
-            <Link to={ADD_SERVICE}>Add Service?</Link>
+            <Link to={ADD_SERVICE}>Add Flight?</Link>
           </Button>
         </Typography>
       </Box>
@@ -55,12 +55,9 @@ const VendorServices: React.FC = () => {
 
   return (
     <>
-      <PageHeading
-        heading='Services Offered'
-        subHeading='Manage your services offered'
-      >
+      <PageHeading heading='Flights' subHeading='Manage your flights'>
         <Button variant='contained'>
-          <Link to={ADD_SERVICE}>Add Service</Link>
+          <Link to={ADD_SERVICE}>Add Flight</Link>
         </Button>
       </PageHeading>
       <Box sx={styles.container}>

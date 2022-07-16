@@ -172,7 +172,7 @@ export const VendorCompletedOrders: React.FC<
     renderedOrders = (
       <Box sx={{ textAlign: 'center' }}>
         <Typography variant='body1' fontWeight='500'>
-          No completed orders
+          No completed flights
         </Typography>
       </Box>
     )
@@ -188,7 +188,7 @@ export const VendorCompletedOrders: React.FC<
     renderedOrders = (
       <Box sx={{ textAlign: 'center' }}>
         <Typography variant='body1' fontWeight='500'>
-          No completed orders
+          No completed flights
         </Typography>
       </Box>
     )

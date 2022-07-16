@@ -33,6 +33,7 @@ import { DropzoneDialog } from 'material-ui-dropzone'
 import { Rate } from '../../../constants/models/Rate'
 import UploadContainer from '../../../components/UploadContainer/UploadContainer'
 import { useDropzone } from 'react-dropzone'
+import { UploadImage } from '../../../components/UploadImage'
 
 interface IAddOrEditSpaceServiceFormProps {}
 
@@ -466,7 +467,7 @@ export const AddOrEditSpaceServiceForm: React.FC<
         </Grid>
         {debug ? <DisplayFormikState {...props} /> : ''}
       </form>
-      <DropzoneDialog
+      {/* <DropzoneDialog
         acceptedFiles={['image/*']}
         cancelButtonText='Cancel'
         submitButtonText='Submit'
@@ -486,7 +487,7 @@ export const AddOrEditSpaceServiceForm: React.FC<
         }}
         showPreviews
         showFileNamesInPreview
-      />
+      /> */}
     </Box>
   )
 }

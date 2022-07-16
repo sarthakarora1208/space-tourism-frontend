@@ -53,6 +53,7 @@ import {
 
 import { EDIT_VENDOR_PROFILE } from '../../../constants/routes'
 import { verifyIdentity } from '../../../slices/businessSlice'
+import { UploadImage } from '../../../components/UploadImage'
 
 interface IVendorProfile {}
 
@@ -142,26 +143,6 @@ const VendorProfile: React.FC<IVendorProfile> = () => {
                     <AddAPhotoIcon />
                   </Button>
                 </Typography>
-                <DropzoneDialog
-                  acceptedFiles={['image/*']}
-                  cancelButtonText='Cancel'
-                  submitButtonText='Submit'
-                  maxFileSize={10240000}
-                  filesLimit={1}
-                  open={open}
-                  onClose={() => setOpen(false)}
-                  onSave={(files) => {
-                    if (files.length > 0) {
-                      const file = files[0]
-                      const formData = new FormData()
-                      formData.append('file', file)
-                      dispatch(uploadVendorProfileImageUrl(formData, navigate))
-                    }
-                    setOpen(false)
-                  }}
-                  showPreviews
-                  showFileNamesInPreview
-                />
                 <Box
                   sx={{
                     display: 'grid',
@@ -228,6 +209,7 @@ const VendorProfile: React.FC<IVendorProfile> = () => {
           </Box>
         </Box>
       </Box>
+      <UploadImage isOpen={open} handleClose={() => setOpen(false)} />
     </Box>
   )
 }

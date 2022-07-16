@@ -6,5 +6,6 @@ export interface BankResponse {
   zip: string
   country: string
   account_number: string
+  iban?: string
   bic: string
 }
