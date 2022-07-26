@@ -72,7 +72,7 @@ export const CancellationForm: React.FC<
             name='cancellationComment'
             error={
               (touched.cancellationComment &&
-                errors.cancellationComment) as boolean
+                errors.cancellationComment) as unknown as boolean
             }
             helperText={errors.cancellationComment}
           />

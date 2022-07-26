@@ -8,6 +8,6 @@
     "amplify/backend/amplify-meta.json": true,
     "amplify/backend/awscloudformation": true
   },
-  "workbench.colorTheme": "GitHub Dark Default",
+  "workbench.colorTheme": "Night Owl (No Italics)",
   "python.linting.enabled": true
 }

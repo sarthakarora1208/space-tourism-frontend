@@ -60,7 +60,7 @@ const VirtualAccounts: React.FC<IVirtualAccountsProps> = ({}) => {
           {' '}
           {bankAccounts.length === 0 && ' No bank accounts found!'}
           {bankAccounts.map((bankAccount) => (
-            <Grid item md={4}>
+            <Grid item md={4} key={bankAccount.currency}>
               <Card
                 sx={{
                   backgroundColor: '#ffffff',

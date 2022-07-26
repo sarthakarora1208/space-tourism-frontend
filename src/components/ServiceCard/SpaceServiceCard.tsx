@@ -128,7 +128,11 @@ const SpaceServiceCard: React.FC<ISpaceServiceCardProps> = ({
                 labelId='charge-select-label'
                 id='charge-select'
                 placeholder='Select a rate'
-                defaultValue={`${rates[0].amount} ${rates[0].currency}`}
+                defaultValue={
+                  rates.length > 0
+                    ? `${rates[0].amount} ${rates[0].currency}`
+                    : `0 USD`
+                }
               >
                 {rates.map((rate: Rate, index: number) => {
                   if (rate.amount > 0) {

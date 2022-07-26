@@ -31,6 +31,7 @@ import {
 import { Rate } from '../../../../constants/models/Rate'
 import RocketLaunchIcon from '@mui/icons-material/RocketLaunch'
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance'
+import { setCountry } from '../../../../slices/orderSlice'
 
 interface BookSpaceServiceFormProps {}
 
@@ -52,35 +53,30 @@ export const BookSpaceServiceForm: React.FC<
 
   const debug = false
 
-  const { spaceService, loading, bankAccounts, customer } = useSelector(
-    (state: RootState) => {
+  const { spaceService, loading, bankAccounts, customer, country } =
+    useSelector((state: RootState) => {
       return {
         spaceService: state.spaceService.spaceService,
         loading: state.order.loading,
         bankAccounts: state.business.bankAccounts,
         customer: state.customer.customer,
+        country: state.order.country,
       }
-    },
-    shallowEqual
-  )
-
-  const [country, setCountry] = React.useState(
-    customer && customer.country ? customer.country : ''
-  )
+    }, shallowEqual)
 
   const handleSelectChange = (event: SelectChangeEvent) => {
-    setCountry(event.target.value as string)
-    let bankAccount = bankAccounts.filter((bankAccount) => {
-      return bankAccount.country_iso === event.target.value
-    })[0]
-    dispatch(setCurrency(bankAccount!.currency))
-    dispatch(
-      setAmount(
-        spaceService!.rates.find((rate) => rate.country === country)!.amount ||
-          0
-      )
-    )
-    dispatch(setIssuedBankAccount(bankAccount!.issuing_id))
+    dispatch(setCountry(event.target.value as string))
+    // let bankAccount = bankAccounts.filter((bankAccount) => {
+    //   return bankAccount.country_iso === event.target.value
+    // })[0]
+    // dispatch(setCurrency(bankAccount!.currency))
+    // dispatch(
+    //   setAmount(
+    //     spaceService!.rates.find((rate) => rate.country === country)!.amount ||
+    //       0
+    //   )
+    // )
+    // dispatch(setIssuedBankAccount(bankAccount!.issuing_id))
   }
 
   useEffect(() => {

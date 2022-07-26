@@ -115,7 +115,11 @@ const ServicesOfferedCard: React.FC<IServicesOfferedCardProps> = ({
                 labelId='charge-select-label'
                 id='charge-select'
                 placeholder='Select a rate'
-                defaultValue={`${service.rates[0].amount} ${service.rates[0].currency}`}
+                defaultValue={
+                  service.rates.length > 0
+                    ? `${service.rates[0].amount} ${service.rates[0].currency}`
+                    : `0 USD`
+                }
               >
                 {service.rates.map((rate: Rate, index: number) => {
                   if (rate.amount > 0) {

@@ -106,7 +106,7 @@ export const CustomerCancelledOrders: React.FC<
               {'Landing time'}
             </TableCell>
             <TableCell sx={tableStyles.tableCellForHead}>
-              {'Amount paid'}
+              {'Refund amount'}
             </TableCell>
             <TableCell sx={tableStyles.tableCellForHead}>
               Ticket Status

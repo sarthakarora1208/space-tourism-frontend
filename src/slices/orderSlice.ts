@@ -22,6 +22,7 @@ export interface orderState {
   completedOrders: Order[]
   cancelledOrders: Order[]
   ongoingOrders: Order[]
+  country: string
   duration: number
   amount: number
   tabIndex: string
@@ -36,6 +37,7 @@ export const initialState: orderState = {
   completedOrders: [],
   cancelledOrders: [],
   ongoingOrders: [],
+  country: '',
   duration: 0,
   amount: 0,
   tabIndex: ORDER_STATUS.INIT.toString(),
@@ -74,6 +76,9 @@ const orderSlice = createSlice({
     setTabIndex(state, action: PayloadAction<string>) {
       state.tabIndex = action.payload
     },
+    setCountry(state, action: PayloadAction<string>) {
+      state.country = action.payload
+    },
     orderFailure(state, action: PayloadAction<string>) {
       state.loading = false
       state.error = action.payload ? action.payload : 'There is some error'
@@ -96,6 +101,7 @@ export const {
   setOngoingOrders,
   setCancelledOrders,
   setAmount,
+  setCountry,
 } = orderSlice.actions
 
 export default orderSlice.reducer
@@ -264,31 +270,41 @@ export const getCancelledOrdersForCustomer =
 
 export const cancelOrder =
   (cancellationReason: string, cancellationComment: string): AppThunk =>
-  async (dispatch) => {
+  async (dispatch, getState) => {
     try {
       dispatch(orderStart())
-      const orderId = store.getState().order.order?.id
-      const cancelledOrder = await REQUESTS.cancelOrder(
-        orderId!,
-        cancellationReason,
-        cancellationComment
-      )
-
-      dispatch(setOrder(null))
+      const store = getState()
+      const orderId = store.order.order!.id
       const user = await Auth.currentAuthenticatedUser()
-      console.log(user)
+      //console.log(user)
 
       if (
         user.attributes['custom:userRole'] === USER_ROLE.CUSTOMER.toString()
       ) {
-        dispatch(getOngoingOrdersForCustomer())
-        dispatch(getCancelledOrdersForCustomer())
+        //alert(store.order.order!.id)
+        const redirectURL = await REQUESTS.cancelOrderRefund(
+          orderId!,
+          cancellationReason,
+          cancellationComment
+        )
+        window.location.replace(redirectURL)
+
+        //dispatch(getOngoingOrdersForCustomer())
+        //dispatch(getCancelledOrdersForCustomer())
       } else {
+        const cancelledOrder = await REQUESTS.cancelOrder(
+          orderId!,
+          cancellationReason,
+          cancellationComment
+        )
+
+        dispatch(setOrder(null))
         dispatch(getOngoingOrdersForVendor())
+        dispatch(getInitOrdersForVendor())
         dispatch(getCancelledOrdersForVendor())
+        dispatch(setSuccessMsg('Flight cancelled successfully!'))
       }
 
-      dispatch(setSuccessMsg('Flight cancelled successfully!'))
       dispatch(orderComplete())
     } catch (err: any) {
       const { error } = err.response.data
@@ -297,6 +313,28 @@ export const cancelOrder =
       console.log(err)
     }
   }
+
+// export const cancelOrderRefund =
+//   (cancellationReason: string, cancellationComment: string): AppThunk =>
+//   async (dispatch) => {
+//     try {
+//       dispatch(orderStart())
+//       const orderId = store.getState().order.order?.id
+//       const redirectURL = await REQUESTS.cancelOrderRefund(
+//         orderId!,
+//         cancellationReason,
+//         cancellationComment
+//       )
+//       window.location.replace(redirectURL)
+
+//       dispatch(orderComplete())
+//     } catch (err: any) {
+//       const { error } = err.response.data
+//       dispatch(orderFailure(error))
+//       dispatch(setErrorMsg(error))
+//       console.log(err)
+//     }
+//   }
 
 export const addReview =
   (stars: number, content: string): AppThunk =>
@@ -369,8 +407,18 @@ export const createOrder = (): AppThunk => async (dispatch, getState) => {
     dispatch(orderStart())
     const store = getState()
     let userId = store.customer.customer!.id
-    let amount = store.business.amount
-    let currency = store.business.currency
+
+    let country = store.order.country
+
+    let amount = store.spaceService.spaceService!.rates.find(
+      (rate) => rate.country === country
+    )!.amount
+
+    let bankAccount = store.business.bankAccounts.filter((bankAccount) => {
+      return bankAccount.country_iso === country
+    })[0]
+    let currency = bankAccount.currency
+
     let serviceId = store.spaceService.spaceService!.id
     let serviceName = store.spaceService.spaceService!.name
     let startTime = store.spaceService.spaceService!.startTime
@@ -383,11 +431,18 @@ export const createOrder = (): AppThunk => async (dispatch, getState) => {
       startTime,
       endTime,
       serviceId,
-      userId
+      userId,
+      country
+    )
+    dispatch(
+      setSuccessMsg(
+        'Order created successfully! You will get confirmation soon!'
+      )
     )
     dispatch(setOrder(order))
     dispatch(orderComplete())
   } catch (err: any) {
+    console.log(err)
     const { error } = err.response.data
     dispatch(orderFailure(error))
     dispatch(setErrorMsg(error))

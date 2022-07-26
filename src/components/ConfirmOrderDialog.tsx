@@ -51,8 +51,8 @@ export const ConfirmOrderDialog: React.FC<IConfirmOrderDialogProps> = ({
           variant='text'
           color='success'
           onClick={() => {
-            dispatch(createOrder())
             dispatch(simulateBankTransfer(navigate))
+            dispatch(createOrder())
             handleClose()
           }}
         >

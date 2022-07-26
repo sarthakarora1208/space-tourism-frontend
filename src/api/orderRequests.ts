@@ -93,7 +93,8 @@ export async function createOrder(
   startTime: Date,
   endTime: Date,
   serviceId: string,
-  userId: string
+  userId: string,
+  country: string
 ) {
   try {
     const res = await API.post<{ data: Order; success: boolean }>(
@@ -106,6 +107,7 @@ export async function createOrder(
         endTime,
         serviceId,
         userId,
+        country,
       }
     )
     return res.data.data
@@ -132,6 +134,22 @@ export async function cancelOrder(
   try {
     const res = await API.post<{ data: Order[]; success: boolean }>(
       `${ORDER_ROUTE}/${orderId}/cancel`,
+      { cancellationComment, cancellationReason }
+    )
+    return res.data.data
+  } catch (err) {
+    throw err
+  }
+}
+
+export async function cancelOrderRefund(
+  orderId: string,
+  cancellationComment: string,
+  cancellationReason: string
+) {
+  try {
+    const res = await API.post<{ data: string; successs: boolean }>(
+      `${ORDER_ROUTE}/${orderId}/cancel-refund`,
       { cancellationComment, cancellationReason }
     )
     return res.data.data

@@ -61,7 +61,9 @@ const Login: React.FC<ILoginProps> = () => {
       renderedForm = <EnhancedLoginForm navigate={navigate} />
       renderedForm = (
         <EnhancedLoginForm
-          email={isCustomer ? 'paliha4007@lodores.com' : 'lenaxe9563@opude.com'}
+          email={
+            isCustomer ? 'lelis47253@logodez.com' : 'firiro8874@altpano.com'
+          }
           password={isCustomer ? '12345678' : '12345678'}
           navigate={navigate}
         />
@@ -104,7 +106,7 @@ const Login: React.FC<ILoginProps> = () => {
           </Grid>
           <Grid item xs={12} md={6}>
             <CssBaseline />
-            <FormGroup>
+            {/* <FormGroup>
               <FormControlLabel
                 control={
                   <Switch
@@ -116,7 +118,7 @@ const Login: React.FC<ILoginProps> = () => {
                 label='isCustomer'
               />
             </FormGroup>
-            <div>{JSON.stringify(isCustomer, null, 4)}</div>
+            <div>{JSON.stringify(isCustomer, null, 4)}</div> */}
             <div style={{ padding: '1em' }}>{renderedForm}</div>
           </Grid>
         </Grid>

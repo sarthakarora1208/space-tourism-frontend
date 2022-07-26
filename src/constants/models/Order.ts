@@ -8,6 +8,7 @@ export interface Order {
   id: string
   status: ORDER_STATUS
   amount: number
+  senderId: string
   currency: string
   serviceName: string
   startTime: Date

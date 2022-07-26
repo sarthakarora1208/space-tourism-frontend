@@ -169,11 +169,31 @@ export const simulateBankTransfer =
     try {
       dispatch(businessStart())
       const store = getState()
-      let { issued_bank_account, amount, currency } = store.business
+
+      let country = store.order.country
+
+      let amount = store.spaceService.spaceService!.rates.find(
+        (rate) => rate.country === country
+      )!.amount
+
+      dispatch(setAmount(amount))
+
+      let bankAccount = store.business.bankAccounts.filter((bankAccount) => {
+        return bankAccount.country_iso === country
+      })[0]
+
+      let issued_bank_account = bankAccount.issuing_id
+
+      dispatch(setIssuedBankAccount(issued_bank_account))
+
+      let currency = bankAccount.currency
+      dispatch(setCurrency(currency))
+
       await REQUESTS.simulateBankTransfer(issued_bank_account, amount, currency)
       navigate(CUSTOMER_ORDERS)
       dispatch(businessComplete())
     } catch (err: any) {
+      console.log(err)
       const { error } = err.response.data
       dispatch(businessFailure(error))
       dispatch(setErrorMsg(error))
