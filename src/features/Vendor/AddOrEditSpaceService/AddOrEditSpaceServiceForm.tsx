@@ -34,6 +34,7 @@ import { Rate } from '../../../constants/models/Rate'
 import UploadContainer from '../../../components/UploadContainer/UploadContainer'
 import { useDropzone } from 'react-dropzone'
 import { UploadImage } from '../../../components/UploadImage'
+import { getSupportedCurrencies } from '../../../slices/businessSlice'
 
 interface IAddOrEditSpaceServiceFormProps {}
 
@@ -59,6 +60,7 @@ export const AddOrEditSpaceServiceForm: React.FC<
   const [isEdit, setIsEdit] = useState(false)
 
   useEffect(() => {
+    dispatch(getSupportedCurrencies())
     if (pathname.split('/').includes('edit')) {
       setIsEdit(true)
     }
@@ -68,7 +70,10 @@ export const AddOrEditSpaceServiceForm: React.FC<
     (state: RootState) => state.spaceService,
     shallowEqual
   )
-
+  const { currencies } = useSelector(
+    (state: RootState) => state.business,
+    shallowEqual
+  )
   const disabled = false
 
   const onDrop = (files: any) => {
@@ -277,6 +282,10 @@ export const AddOrEditSpaceServiceForm: React.FC<
           </Grid>
         </Grid>
         <br />
+        <Typography variant='body2' sx={styles.label}>
+          These are the supported currencies:{' '}
+          <strong>{currencies.join(', ')}</strong>
+        </Typography>
         <Grid item width='100%'>
           <FormControl sx={styles.formControl}>
             <Stack
@@ -287,6 +296,8 @@ export const AddOrEditSpaceServiceForm: React.FC<
               <Typography variant='body2' sx={styles.label}>
                 <strong>Space Rates</strong> - How much will the flight cost?
               </Typography>
+              <br />
+
               {!isEdit && (
                 <Stack direction='row' spacing={2}>
                   <Button
@@ -298,7 +309,7 @@ export const AddOrEditSpaceServiceForm: React.FC<
                           id: uuidv4(),
                           amount: 0,
                           currency: 'USD',
-                          country: 'U.S.A',
+                          country: 'USA',
                         })
                       )
                     }}

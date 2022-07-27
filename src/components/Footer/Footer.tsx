@@ -86,31 +86,6 @@ export const Footer = () => {
                       Home
                     </a>
                   </li>
-
-                  <li>
-                    <a
-                      className='block pb-2 text-sm font-semibold text-slate-50 underline hover:text-slate-100'
-                      href='/about-us'
-                    >
-                      About Us
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      className='block pb-2 text-sm font-semibold text-slate-50 underline hover:text-slate-100'
-                      href='/faq'
-                    >
-                      FAQ
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      className='block pb-2 text-sm font-semibold text-slate-50 underline  only:hover:text-slate-100'
-                      href='/contact-us'
-                    >
-                      Contact Us
-                    </a>
-                  </li>
                 </ul>
               </div>
             </div>

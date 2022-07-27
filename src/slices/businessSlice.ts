@@ -23,6 +23,8 @@ export interface businessState {
   issued_bank_account: string
   amount: number
   currency: string
+  currencies: string[]
+  payouts: any[]
 }
 
 export const initialState: businessState = {
@@ -35,6 +37,8 @@ export const initialState: businessState = {
   currency: '',
   amount: 0,
   issued_bank_account: '',
+  currencies: [],
+  payouts: [],
 }
 
 const businessSlice = createSlice({
@@ -66,6 +70,12 @@ const businessSlice = createSlice({
     setTransactions(state, action: PayloadAction<Transaction[]>) {
       state.transactions = action.payload
     },
+    setCurrencies(state, action: PayloadAction<string[]>) {
+      state.currencies = action.payload
+    },
+    setPayouts(state, action: PayloadAction<any[]>) {
+      state.payouts = action.payload
+    },
     businessFailure(state, action: PayloadAction<string>) {
       state.loading = false
       state.error = action.payload ? action.payload : 'There is some error'
@@ -85,6 +95,8 @@ export const {
   setTransactions,
   setAmount,
   setIssuedBankAccount,
+  setCurrencies,
+  setPayouts,
   businessFailure,
   businessComplete,
 } = businessSlice.actions
@@ -199,3 +211,35 @@ export const simulateBankTransfer =
       dispatch(setErrorMsg(error))
     }
   }
+
+export const getSupportedCurrencies =
+  (): AppThunk => async (dispatch, getState) => {
+    try {
+      dispatch(businessStart())
+      const store = getState()
+      let country = store.vendor.vendor!.country
+      let data = await REQUESTS.getSupportedCurrencies(country)
+      dispatch(setCurrencies(data))
+      dispatch(businessComplete())
+    } catch (err: any) {
+      const { error } = err.response.data
+      dispatch(businessFailure(error))
+      dispatch(setErrorMsg(error))
+    }
+  }
+
+export const listPayouts = (): AppThunk => async (dispatch, getState) => {
+  try {
+    dispatch(businessStart())
+    const store = getState()
+    let eWallet = store.vendor.vendor!.business!.eWallet
+    let data = await REQUESTS.listPayouts(eWallet)
+    dispatch(setPayouts(data))
+
+    dispatch(businessComplete())
+  } catch (err: any) {
+    const { error } = err.response.data
+    dispatch(businessFailure(error))
+    dispatch(setErrorMsg(error))
+  }
+}

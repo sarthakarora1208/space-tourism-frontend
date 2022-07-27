@@ -35,7 +35,7 @@ const Login: React.FC<ILoginProps> = () => {
 
   let renderedForm
 
-  const [isCustomer, setIsCustomer] = useState<boolean>(true)
+  const [isCustomer, setIsCustomer] = useState<boolean>(false)
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsCustomer(event.target.checked)

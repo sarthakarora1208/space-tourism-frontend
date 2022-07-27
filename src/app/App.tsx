@@ -34,6 +34,8 @@ import CustomerServices from '../features/Customer/CustomerServices/CustomerServ
 import BookService from '../features/Customer/BookService/BookService'
 import VirtualAccounts from '../features/Vendor/VirtualAccounts/VirtualAccounts'
 import ViewVirtualAccountTransactions from '../features/Vendor/ViewVirtualAccountTransactions/ViewVirtualAccountTransactions'
+import { Home } from '../features/Home/Home/Home'
+import { VendorRefunds } from '../features/Vendor/VendorRefunds/VendorRefunds'
 
 Amplify.configure(awsConfig)
 
@@ -50,7 +52,8 @@ const App: React.FC<IAppProps> = ({}) => {
               <DashboardMenu>
                 <Alerts />
                 <Routes>
-                  <Route path={ROUTES.HOME} element={<>Hello</>} />
+                  <Route path={ROUTES.HOME} element={<Home />} />
+                  <Route path={ROUTES.TEST_ROUTE} element={<Home />} />
                   <Route
                     path={ROUTES.CUSTOMER_REGISTER}
                     element={<Register />}
@@ -100,6 +103,10 @@ const App: React.FC<IAppProps> = ({}) => {
                     <Route
                       path={ROUTES.viewVirtualAccountTransactions()}
                       element={<ViewVirtualAccountTransactions />}
+                    />
+                    <Route
+                      path={ROUTES.VENDOR_REFUNDS}
+                      element={<VendorRefunds />}
                     />
                   </Route>
                   {/* Customer Dashboard */}

@@ -114,36 +114,6 @@ export const Navbar = () => {
                 </Link>
               </MenuItem>
 
-              <MenuItem onClick={handleCloseNavMenu}>
-                <a href='/#search-service'>
-                  <Typography textAlign='center' color='primary'>
-                    Book Your Services
-                  </Typography>
-                </a>
-              </MenuItem>
-              <MenuItem onClick={handleCloseNavMenu}>
-                <Link to='/about-us'>
-                  <Typography textAlign='center' color='primary'>
-                    About us
-                  </Typography>
-                </Link>
-              </MenuItem>
-
-              <MenuItem onClick={handleCloseNavMenu}>
-                <Link to='/contact-us'>
-                  <Typography textAlign='center' color='primary'>
-                    Contact us
-                  </Typography>
-                </Link>
-              </MenuItem>
-              <MenuItem onClick={handleCloseNavMenu}>
-                <Link to='/faq'>
-                  <Typography textAlign='center' color='primary'>
-                    FAQ
-                  </Typography>
-                </Link>
-              </MenuItem>
-
               <MenuItem>
                 <Typography
                   textAlign='center'
@@ -230,18 +200,6 @@ export const Navbar = () => {
             >
               <Link to='/'>
                 <Typography fontWeight='600'>Home</Typography>
-              </Link>
-
-              <Link to='about-us'>
-                <Typography fontWeight='600'>About Us</Typography>
-              </Link>
-
-              <Link to='/faq'>
-                <Typography fontWeight='600'>FAQ</Typography>
-              </Link>
-
-              <Link to='/contact-us'>
-                <Typography fontWeight='600'>Contact Us</Typography>
               </Link>
             </Stack>
             <Box

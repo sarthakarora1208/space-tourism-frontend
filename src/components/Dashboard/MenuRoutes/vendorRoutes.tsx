@@ -7,11 +7,14 @@ import {
   IoAlbums,
   IoAirplane,
 } from 'react-icons/io5'
+import { RiRefund2Fill } from 'react-icons/ri'
+
 import {
   VENDOR_PROFILE,
   VENDOR_SERVICES,
   VENDOR_ORDERS,
   VENDOR_VIRTUAL_ACCOUNTS,
+  VENDOR_REFUNDS,
 } from '../../../constants/routes'
 
 export const vendorRoutes = [
@@ -34,7 +37,11 @@ export const vendorRoutes = [
         route: VENDOR_VIRTUAL_ACCOUNTS,
         icon: <IoAlbums fontSize={24} />,
       },
-
+      {
+        id: 'Refunds',
+        route: VENDOR_REFUNDS,
+        icon: <RiRefund2Fill fontSize={24} />,
+      },
       {
         id: 'Profile',
         route: VENDOR_PROFILE,

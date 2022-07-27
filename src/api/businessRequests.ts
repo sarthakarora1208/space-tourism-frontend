@@ -73,3 +73,31 @@ export async function simulateBankTransfer(
     throw err
   }
 }
+
+export async function getSupportedCurrencies(country: string) {
+  try {
+    const res = await API.post<{ data: any; success: boolean }>(
+      `${BUSINESS_ROUTE}/supported-currencies`,
+      {
+        country,
+      }
+    )
+    return res.data.data
+  } catch (err) {
+    throw err
+  }
+}
+
+export async function listPayouts(eWallet: string) {
+  try {
+    const res = await API.post<{ data: any; success: boolean }>(
+      `${BUSINESS_ROUTE}/payouts`,
+      {
+        eWallet,
+      }
+    )
+    return res.data.data
+  } catch (err) {
+    throw err
+  }
+}
