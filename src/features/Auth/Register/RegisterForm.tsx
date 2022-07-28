@@ -54,7 +54,7 @@ export const RegisterForm: React.FC<
     <Box my={3}>
       <div style={{ margin: '0px 0px 22px' }}>
         <Typography variant='h4' sx={styles.welcomeBackText}>
-          Create a Customer account
+          Create a customer account
         </Typography>
         <Typography variant='body1' sx={styles.loginText}>
           Fill out the form to get started.

@@ -35,7 +35,7 @@ const Login: React.FC<ILoginProps> = () => {
 
   let renderedForm
 
-  const [isCustomer, setIsCustomer] = useState<boolean>(false)
+  const [isCustomer, setIsCustomer] = useState<boolean>(true)
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setIsCustomer(event.target.checked)
@@ -61,9 +61,9 @@ const Login: React.FC<ILoginProps> = () => {
       renderedForm = <EnhancedLoginForm navigate={navigate} />
       renderedForm = (
         <EnhancedLoginForm
-          email={
-            isCustomer ? 'lelis47253@logodez.com' : 'firiro8874@altpano.com'
-          }
+          // email={
+          //   isCustomer ? 'lelis47253@logodez.com' : 'firiro8874@altpano.com'
+          // }
           password={isCustomer ? '12345678' : '12345678'}
           navigate={navigate}
         />

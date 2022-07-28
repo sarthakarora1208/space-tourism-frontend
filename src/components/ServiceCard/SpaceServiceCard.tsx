@@ -153,9 +153,6 @@ const SpaceServiceCard: React.FC<ISpaceServiceCardProps> = ({
           </Box>
 
           <Box sx={styles.actionContainer}>
-            <Button size='small'>
-              <Link to={`${SPACE_SERVICE_ROUTE}/${serviceId}`}>Learn More</Link>
-            </Button>
             <Button
               size='small'
               variant='contained'

@@ -82,9 +82,6 @@ const VendorProfile: React.FC<IVendorProfile> = () => {
         >
           Edit Profile
         </Button>
-        <Button variant='text' onClick={() => navigate(`/v/${vendor!.id}`)}>
-          View Public Profile
-        </Button>
       </PageHeading>
 
       <Box sx={styles.container}>

@@ -14,7 +14,7 @@ const HowItWorks = () => {
     {
       icon: <MdEmojiPeople color='black' size={42} />,
       title: '1. Register',
-      description: 'Create an account to look up your service',
+      description: 'Create an account to look up your flight',
     },
 
     {
@@ -30,7 +30,8 @@ const HowItWorks = () => {
     {
       icon: <MdPayment color='black' size={42} />,
       title: '4. Pay',
-      description: 'Pay securely through out platform',
+      description:
+        'Pay securely by transferring money to the vendors local account',
     },
 
     {

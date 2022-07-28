@@ -3,8 +3,11 @@ import { Button } from '@mui/material'
 
 // images
 import HeaderImage from '../../../../assets/images/Keyano-logo.png'
+import { useNavigate } from 'react-router-dom'
+import { LOGIN } from '../../../../constants/routes'
 
 const Hero: React.FC = () => {
+  const navigate = useNavigate()
   return (
     <div className='relative mx-auto overflow-hidden bg-white '>
       <div className='mx-auto max-w-7xl'>
@@ -30,17 +33,29 @@ const Hero: React.FC = () => {
                 </span>
               </h1>
               <p className='mt-5 text-sm text-gray-600 sm:mx-auto sm:mt-5 sm:max-w-xl sm:text-base md:mt-5 md:text-lg lg:mx-0'>
-                Keyano is a space travel
+                Keyano is world's first space travel marketplace
               </p>
               <div className='mt-5 flex justify-center gap-3 sm:mt-8 sm:flex-row lg:justify-start'>
                 <div className='mt-3 sm:mt-0'>
-                  <Button variant='contained' size='large'>
+                  <Button
+                    variant='contained'
+                    size='large'
+                    onClick={() => {
+                      navigate(LOGIN)
+                    }}
+                  >
                     Book a Flight
                   </Button>
                 </div>
 
                 <div className='mt-3 sm:mt-0 sm:ml-3'>
-                  <Button variant='outlined' size='large'>
+                  <Button
+                    variant='outlined'
+                    size='large'
+                    onClick={() => {
+                      navigate(LOGIN)
+                    }}
+                  >
                     Add a Flight
                   </Button>
                 </div>

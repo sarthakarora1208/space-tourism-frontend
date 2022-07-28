@@ -76,14 +76,14 @@ const EnhancedRegisterForm = withFormik<
   EnhancedRegisterFormValues
 >({
   mapPropsToValues: (props) => ({
-    name: props.name ? props.name : '',
+    name: props.name ? props.name : 'Jane Doe',
     email: props.email ? props.email : '',
     username: props.username ? props.username : '',
     phone: props.phone ? props.phone : '',
     gender: props.gender ? props.gender : 0,
     country: props.country ? props.country : '',
-    password: '',
-    passwordConfirmation: '',
+    password: '12345678',
+    passwordConfirmation: '12345678',
     role: USER_ROLE.CUSTOMER,
     dob: new Date(),
   }),

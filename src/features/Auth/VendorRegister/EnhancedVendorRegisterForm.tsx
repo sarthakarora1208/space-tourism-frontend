@@ -105,20 +105,20 @@ const EnhancedVendorRegisterForm = withFormik<
   EnhancedVendorRegisterFormValues
 >({
   mapPropsToValues: (props) => ({
-    name: props.name ? props.name : 'Name',
+    name: props.name ? props.name : 'Richard Branson',
     email: props.email ? props.email : '',
-    username: props.username ? props.username : 'username1',
-    phone: props.phone ? props.phone : '+918700187914',
+    username: props.username ? props.username : 'Virgin Galactic',
+    phone: props.phone ? props.phone : '+465724249138',
     gender: props.gender ? props.gender : 0,
-    address: props.address ? props.address : 'address',
-    state: props.state ? props.state : 'state',
-    city: props.city ? props.city : 'city',
-    postalCode: props.postalCode ? props.postalCode : '121001',
+    address: props.address ? props.address : 'Kamperhoug 63',
+    state: props.state ? props.state : 'Region Midtjylland',
+    city: props.city ? props.city : 'Risskov',
+    postalCode: props.postalCode ? props.postalCode : '8229',
     password: '12345678',
     passwordConfirmation: '12345678',
     role: USER_ROLE.VENDOR,
     dob: new Date(),
-    country: props.country ? props.country : 'GB',
+    country: props.country ? props.country : '',
   }),
   validationSchema: Yup.object().shape({
     name: Yup.string().required(NAME_REQUIRED),
