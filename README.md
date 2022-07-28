@@ -32,11 +32,11 @@
   </p>
 </p>
 
-## Introduction
+# Introduction
 
 This project was bootstrapped with Vite.
 
-# Getting Started with the React App
+## Getting Started with the React App
 
 Install all the packages and run the react app
 
