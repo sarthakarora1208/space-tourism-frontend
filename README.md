@@ -49,7 +49,7 @@ npm run start
 
 You need to create a user pool in [AWS Cognito](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-identity-pools.html) and then need to add the credentials to the [config](./src/config/config.ts) file.
 
-```json
+```
 const DEVELOPMENT = {
   amplifyConfig: {
     aws_project_region: 'YOUR_AWS_REGION',
