@@ -1,72 +1,78 @@
-## Inspiration
+# Keyano - Space Tourism Frontend
 
-As the Billionaire space race intensifies, we need modern solutions for space flight booking.
+[![forthebadge](https://forthebadge.com/images/badges/open-source.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/made-with-typescript.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/made-with-javascript.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/made-with-markdown.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/check-it-out.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/uses-git.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/uses-css.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)
+![](https://img.shields.io/badge/Amazon_AWS-232F3E?style=for-the-badge&logo=amazon-aws&logoColor=white)
 
-Keyano is the world's first space marketplace.
+<!-- PROJECT LOGO -->
+<br />
+<p align="center">
+  <a href="https://github.com/sarthakarora1208/space-tourism-frontend">
+    <img src="https://user-images.githubusercontent.com/42542489/181535957-35921d70-45d1-4a3f-8388-403b014d6431.gif" alt="Logo">
+  </a>
 
-a) The space tourism company wants to accept Euros with a European IBAN number that it provides to European customers even though the Space Tourism company is based in the US.
+  <h3 align="center">Keyano Space Tourism</h3>
 
-b) The space tourism company wants to accept Singaporean Dollars with a Singapore Virtual Account Number (VAN) that it provides to its Singaporean customers even though the Space Tourism company is based in the U.S.
+  <p align="center">
+    <a href="https://devpost.com/software/keyano-space-tourism"><strong>Explore the docs »</strong></a>
+    <br />
+	World's first space marketplace. Get your ticket to space now!
+    <br />
+    <a href="https://youtu.be/eOFrOCmDVV4">View Demo</a>
+    ·
+    <a href="https://github.com/sarthakarora1208/space-tourism-frontend/issues">Report Bug</a>
+    ·
+    <a href="https://github.com/sarthakarora1208/space-tourism-frontend/issues">Request Feature</a>
+  </p>
+</p>
 
-c) The space tourism company wants to consume all of Rapyd’s VAN capabilities so it can accept local bank transfers from its customers around the world.
+## Introduction
 
-Why Credit Cards are not a good option? Credit card fees are cost-prohibitive for the space travel company. Interchange fees eat up a large portion of the payment amount. Most consumer credit cards don’t have a $100K+ limit and in many markets around the globe, credit cards are not the preferred option.
+This project was bootstrapped with Vite.
 
-Why not use Wire Transfers? Wire transfers are expensive, can create reconciliation issues, and create a hassle for the sender as most banks will require extra due diligence for a cross-border transfer (and maybe for the large amount being sent?).
+# Getting Started with the React App
 
-## What it does
+Install all the packages and run the react app
 
-As Space Tourism becomes mainstream, financial services will have to evolve to enable high-volume transactions.
+```
+npm install
+npm run start
+```
 
-Keyano is the world's first space flight marketplace connecting space exploration ventures directly to customers. They can search for flights, book flights and ask for refunds.
+#### AWS Cognito
 
-User Personas
+You need to create a user pool in [AWS Cognito](https://docs.aws.amazon.com/cognito/latest/developerguide/cognito-user-identity-pools.html) and then need to add the credentials to the [config](./src/config/config.ts) file.
 
-##### Space Vendor -
+```json
+const DEVELOPMENT = {
+  amplifyConfig: {
+    aws_project_region: 'YOUR_AWS_REGION',
+    aws_cognito_identity_pool_id: '',
+    aws_cognito_region: 'YOUR_AWS_REGION',
+    aws_user_pools_id: 'YOUR_USER_POOL_ID',
+    aws_user_pools_web_client_id: 'YOUR_USER_POOL_WEB_CLIENT_ID',
+    oauth: {},
+    aws_appsync_graphqlEndpoint: '',
+    aws_appsync_region: '',
+    aws_appsync_authenticationType: '',
+  },
+  ENVIRONMENT: 'development',
+}
 
-- List flights
-- Manage profile
-- Manage tickets
-- Manage funds in local bank accounts
-- Process refunds
+```
 
-#### Space Tourists
+# To get a production build
 
-- Search Space Flights
-- Book Flights
-- Cancel Flights
+```
+npm run build
+```
 
-## How we built it
+## Learn More
 
-Keyano is a full-stack application built entirely using Typescript, ReactJS & NodeJS.
-
-#### FRONTEND
-
-ReactJs & Material UI power the frontend of the application. Redux handles the state management. Finally, Formik & Yup make for making elegant forms with dynamic error handling.
-
-#### BACKEND
-
-Nodejs and Typescript are used to build the backend. Express is used as a middleware to handle incoming requests from the React-based frontend. A PostgreSQL database hosted on AWS serves as the data store for the application to keep track of the audit data, the user data & the revision request data. Finally, TypeORM is an ORM (Object-relational Mapper) that helps us to write SQL queries.
-
-#### Rapyd APIs used
-
-Rapyd Virtual Accounts
-Rapyd Disburse
-Rapyd Issuing
-Rapyd Wallet
-
-## Challenges we ran into
-
-## Accomplishments that we're proud of
-
-We were able to complete the project in time and solve a problem that existed.
-
-## What we learned
-
-Rapyd Virtual Accounts
-An innovative way to send money across borders
-
-## What's next for Keyano Space Tourism
-
-Enable multi-step payments
-Adding compliance documents and
+To learn React, check out the [React documentation](https://reactjs.org/).

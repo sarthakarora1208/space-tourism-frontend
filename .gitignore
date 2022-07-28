@@ -1,7 +1,6 @@
 node_modules
 .DS_Store
 dist
-src/config
 
 #amplify-do-not-edit-begin
 amplify/\#current-cloud-backend
