@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import React, { useState } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 import {
   ListItemIcon,
   ListItem,
@@ -9,39 +9,38 @@ import {
   Typography,
   Menu,
   MenuItem,
-} from "@mui/material";
-import { shallowEqual, useSelector } from "react-redux";
-import { IoLogOutOutline } from "react-icons/io5";
-import { RootState } from "../../app/rootReducer";
-import { LogoutDialog } from "../Auth/LogoutDialog";
-import { vendorRoutes } from "./MenuRoutes/vendorRoutes";
-import { customerRoutes } from "./MenuRoutes/customerRoutes";
-import { USER_ROLE } from "../../constants/userRoles";
+} from '@mui/material'
+import { shallowEqual, useSelector } from 'react-redux'
+import { IoLogOutOutline } from 'react-icons/io5'
+import { RootState } from '../../app/rootReducer'
+import { vendorRoutes } from './MenuRoutes/vendorRoutes'
+import { customerRoutes } from './MenuRoutes/customerRoutes'
+import { USER_ROLE } from '../../constants/userRoles'
 
-import { CUSTOMER_DASHBOARD, VENDOR_DASHBOARD } from "../../constants/routes";
-import styles from "../../assets/jss/components/DashboardLayoutStyles/DrawerStyles";
+import { CUSTOMER_DASHBOARD, VENDOR_DASHBOARD } from '../../constants/routes'
+import styles from '../../assets/jss/components/DashboardLayoutStyles/DrawerStyles'
 
 interface INavigatorProps {}
 
 export const Navigator: React.FC<INavigatorProps> = () => {
-  const { pathname } = useLocation();
-  const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false);
+  const { pathname } = useLocation()
+  const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false)
   const { user, role } = useSelector((state: RootState) => {
     return {
       user: state.auth.user,
       role: state.auth.role,
-    };
-  }, shallowEqual);
+    }
+  }, shallowEqual)
 
-  let homeLink;
-  let routes = customerRoutes;
+  let homeLink
+  let routes = customerRoutes
 
   if (role === USER_ROLE.CUSTOMER) {
-    homeLink = CUSTOMER_DASHBOARD;
-    routes = customerRoutes;
+    homeLink = CUSTOMER_DASHBOARD
+    routes = customerRoutes
   } else if (role === USER_ROLE.VENDOR) {
-    homeLink = VENDOR_DASHBOARD;
-    routes = vendorRoutes;
+    homeLink = VENDOR_DASHBOARD
+    routes = vendorRoutes
   }
 
   return (
@@ -54,8 +53,8 @@ export const Navigator: React.FC<INavigatorProps> = () => {
                 key={childId}
                 to={route}
                 style={{
-                  textDecoration: "none",
-                  color: "white",
+                  textDecoration: 'none',
+                  color: 'white',
                 }}
               >
                 <ListItem
@@ -78,7 +77,7 @@ export const Navigator: React.FC<INavigatorProps> = () => {
                       sx={{
                         ...(pathname.includes(route) && styles.itemActiveTitle),
                       }}
-                      variant="body1"
+                      variant='body1'
                     >
                       {childId}
                     </Typography>
@@ -90,5 +89,5 @@ export const Navigator: React.FC<INavigatorProps> = () => {
         ))}
       </List>
     </Box>
-  );
-};
+  )
+}

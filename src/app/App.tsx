@@ -53,7 +53,6 @@ const App: React.FC<IAppProps> = ({}) => {
                 <Alerts />
                 <Routes>
                   <Route path={ROUTES.HOME} element={<Home />} />
-                  <Route path={ROUTES.TEST_ROUTE} element={<Home />} />
                   <Route
                     path={ROUTES.CUSTOMER_REGISTER}
                     element={<Register />}
