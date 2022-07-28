@@ -64,7 +64,6 @@ const DEVELOPMENT = {
   },
   ENVIRONMENT: 'development',
 }
-
 ```
 
 # To get a production build
